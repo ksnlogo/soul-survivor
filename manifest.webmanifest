@@ -1,0 +1,35 @@
+{
+  "id": "./",
+  "name": "소울 서바이버",
+  "short_name": "소울서바이버",
+  "description": "7분 원정, 특수 웨이브, 장비 파밍과 무기·스킬 진화를 즐기는 모바일 생존 액션 RPG",
+  "lang": "ko-KR",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "orientation": "any",
+  "background_color": "#080c17",
+  "theme_color": "#080c17",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

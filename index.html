@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="무림 생존록" />
-  <title>무림 생존록 v4.1.1</title>
+  <title>무림 생존록 v4.1.2</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/icon-180.png" />
   <meta name="mobile-web-app-capable" content="yes" />
@@ -835,7 +835,88 @@ if(shopHintV41)shopHintV41.innerHTML='원정에서 드물게 얻는 <b>문파 �
 
 
 
-window.addEventListener('error',e=>{console.error('Game error',e.error||e.message);try{showToast('실행 오류를 감지했습니다. 페이지를 새로고침해 주세요.')}catch(_){}});
+
+/* ===== v4.1.2 STARTUP RECOVERY / SAFARI DIAGNOSTIC PATCH ===== */
+const V412_BACKUP_KEY='soulSurvivorProfileV5_backup_412';
+let v412LastFatal=null;
+function v412Num(v,f=0){v=Number(v);return Number.isFinite(v)?v:f}
+function v412SafeProfile(){
+  try{
+    if(!profile||typeof profile!=='object')profile=freshProfile();
+    try{if(!localStorage.getItem(V412_BACKUP_KEY))localStorage.setItem(V412_BACKUP_KEY,JSON.stringify(profile))}catch(_){}
+    const validSlots=new Set(['weapon','head','chest','gloves','legs','boots','accessory']);
+    const validRarity=new Set(Object.keys(rarityInfo));
+    const allowedStats=new Set(['damage','maxHp','fireRatePct','movePct','crit','damageReduction','magnet','goldBonus','regen','bulletSize']);
+    profile.inventory=Array.isArray(profile.inventory)?profile.inventory.filter(Boolean):[];
+    profile.inventory=profile.inventory.map((i,idx)=>{
+      if(!i||typeof i!=='object')return null;
+      if(!validSlots.has(i.slot))return null;
+      i.id=i.id||('repair_'+Date.now()+'_'+idx+'_'+Math.random().toString(36).slice(2));
+      i.rarity=validRarity.has(i.rarity)?i.rarity:'common';
+      i.level=Math.max(1,Math.floor(v412Num(i.level,1)));
+      i.stats=(i.stats&&typeof i.stats==='object')?i.stats:{};
+      const clean={};for(const [k,v] of Object.entries(i.stats)){if(allowedStats.has(k)&&Number.isFinite(Number(v)))clean[k]=Number(v)}i.stats=clean;
+      i.affixes=Array.isArray(i.affixes)?i.affixes.filter(a=>a&&typeof a==='object'):[];
+      if(i.slot==='weapon'&&!weaponDefs[i.weaponType])i.weaponType='sword';
+      if(i.setId&&!setDefs[i.setId])i.setId=null;
+      i.name=String(i.name||'이름 없는 장비');i.icon=String(i.icon||'▫️');
+      try{i.score=calcItemScore(i)}catch(_){i.score=Math.max(1,Math.round(v412Num(i.score,1)))}
+      return i;
+    }).filter(Boolean);
+    profile.equipped=(profile.equipped&&typeof profile.equipped==='object')?profile.equipped:{};
+    const slotKeys=['weapon','head','chest','gloves','legs','boots','accessory1','accessory2','accessory3'];
+    const ids=new Set(profile.inventory.map(i=>i.id));
+    for(const slot of slotKeys){if(!ids.has(profile.equipped[slot]))profile.equipped[slot]=null}
+    let weapon=profile.inventory.find(i=>i.id===profile.equipped.weapon&&i.slot==='weapon');
+    if(!weapon){
+      weapon=profile.inventory.filter(i=>i.slot==='weapon').sort((a,b)=>(b.score||0)-(a.score||0))[0];
+      if(!weapon){weapon=starterItem('weapon','수련용 청강검','⚔️',{damage:4},'sword');profile.inventory.unshift(weapon)}
+      profile.equipped.weapon=weapon.id;
+    }
+    for(const s of ['head','chest','gloves','legs','boots']){
+      const cur=profile.inventory.find(i=>i.id===profile.equipped[s]);
+      if(cur&&cur.slot!==s)profile.equipped[s]=null;
+    }
+    for(const s of ['accessory1','accessory2','accessory3']){
+      const cur=profile.inventory.find(i=>i.id===profile.equipped[s]);
+      if(cur&&cur.slot!=='accessory')profile.equipped[s]=null;
+    }
+    profile.gold=Math.max(0,Math.floor(v412Num(profile.gold,0)));
+    profile.soulXp=Math.max(0,v412Num(profile.soulXp,0));
+    profile.soulLevel=Math.max(1,Math.floor(v412Num(profile.soulLevel,1)));
+    profile.highestStage=Math.max(1,Math.floor(v412Num(profile.highestStage,1)));
+    profile.sectPrestige=Math.max(0,Math.floor(v412Num(profile.sectPrestige,0)));
+    profile.skillsOwned=Array.isArray(profile.skillsOwned)?[...new Set(profile.skillsOwned.filter(id=>skillDefs[id]))]:[];
+    profile.equippedSkills=[null,null,null];
+    profile.shopStock=Array.isArray(profile.shopStock)?profile.shopStock.filter(o=>o&&o.type==='item'&&o.item):[];
+    profile.shopRefreshes=Math.max(0,Math.floor(v412Num(profile.shopRefreshes,0)));
+    saveProfile();return true;
+  }catch(err){console.error('Profile repair failed',err);return false}
+}
+function v412Fatal(err,phase='RUNTIME'){
+  if(v412LastFatal&&v412LastFatal===err)return;
+  v412LastFatal=err;
+  const msg=(err&&err.message)||String(err||'Unknown error');
+  const stack=(err&&err.stack)||'';
+  console.error('[MURIM '+phase+']',err);
+  running=false;paused=false;
+  try{hud.classList.add('hidden');joystick.classList.add('hidden');miniMap.classList.add('hidden');weaponBadge.classList.add('hidden');zoneBadge.classList.add('hidden');enemyGuide.classList.add('hidden');waveBadge.classList.add('hidden')}catch(_){}
+  let box=document.getElementById('fatalError412');
+  if(!box){box=document.createElement('div');box.id='fatalError412';box.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(8,10,12,.96);color:#f6efe0;padding:24px 18px;overflow:auto;font:14px/1.55 system-ui,-apple-system,sans-serif';document.body.appendChild(box)}
+  const safe=(t)=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  box.innerHTML='<div style="max-width:620px;margin:20px auto;background:#191711;border:1px solid #6a5734;border-radius:18px;padding:18px"><div style="font-size:12px;color:#d9b86e;font-weight:800">v4.1.2 · '+safe(phase)+'</div><h2 style="margin:6px 0 10px">⚠️ 실행 오류 상세 정보</h2><div style="background:#0d0d0b;border-radius:10px;padding:12px;word-break:break-word"><b>'+safe(msg)+'</b></div><pre style="white-space:pre-wrap;word-break:break-word;font-size:11px;color:#bdb7aa;background:#10100d;padding:10px;border-radius:10px;max-height:180px;overflow:auto">'+safe(stack.slice(0,1800))+'</pre><p style="font-size:12px;color:#aaa394">아래 버튼은 현재 저장 데이터를 별도 백업한 뒤 장비 데이터를 정리하여 다시 시작합니다. 진행 스테이지·문파 명성·금화는 유지합니다.</p><button id="fatalRepair412" style="width:100%;border:0;border-radius:12px;padding:13px;background:#d3ad5d;color:#18130b;font-weight:900">저장 데이터 복구 후 다시 시작</button><button id="fatalClose412" style="width:100%;margin-top:8px;border:1px solid #4c4638;border-radius:12px;padding:12px;background:#27231a;color:#eee6d5;font-weight:800">메인 화면으로</button></div>';
+  document.getElementById('fatalRepair412').onclick=()=>{v412LastFatal=null;box.remove();v412SafeProfile();try{renderHome();startScreen.classList.remove('hidden')}catch(_){};setTimeout(()=>{try{start()}catch(e){v412Fatal(e,'RETRY_START')}},60)};
+  document.getElementById('fatalClose412').onclick=()=>{box.remove();try{renderHome();startScreen.classList.remove('hidden')}catch(_){location.reload()}};
+}
+v412SafeProfile();
+const v412StartBase=start;
+start=function(){try{v412SafeProfile();return v412StartBase()}catch(err){v412Fatal(err,'START')}};
+const v412LoopBase=loop;
+loop=function(now){try{return v412LoopBase(now)}catch(err){v412Fatal(err,'FRAME')}};
+window.addEventListener('unhandledrejection',e=>{v412Fatal(e.reason||new Error('Unhandled promise rejection'),'PROMISE')});
+/* ===== END v4.1.2 PATCH ===== */
+
+window.addEventListener('error',e=>{const err=e.error||new Error((e.message||'Resource/runtime error')+' @ '+(e.filename||'')+':'+(e.lineno||0)+':'+(e.colno||0));v412Fatal(err,'WINDOW')});
 addEventListener('touchstart',joyStart,{passive:false});addEventListener('touchmove',e=>{if(running)e.preventDefault();joyMove(e)},{passive:false});addEventListener('touchend',joyEnd,{passive:false});addEventListener('touchcancel',joyEnd,{passive:false});addEventListener('mousedown',joyStart);addEventListener('mousemove',joyMove);addEventListener('mouseup',joyEnd);addEventListener('keydown',e=>keys[e.key.toLowerCase()]=true);addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
 $('startBtn').onclick=start;$('retryBtn').onclick=start;$('equipBtn').onclick=()=>{equipmentReturn='home';inventoryFilter='all';startScreen.classList.add('hidden');renderEquipment();equipmentScreen.classList.remove('hidden')};$('equipBackBtn').onclick=()=>{equipmentScreen.classList.add('hidden');renderHome();if(equipmentReturn==='result')gameover.classList.remove('hidden');else startScreen.classList.remove('hidden')};$('autoEquipBtn').onclick=autoEquip;$('skillBtn').onclick=()=>openSkillScreen('home');$('skillBackBtn').onclick=closeSkillScreen;$('shopBtn').onclick=()=>openShop('home');$('resultShopBtn').onclick=()=>openShop('result');$('shopBackBtn').onclick=closeShop;$('shopBuyTab').onclick=()=>{shopMode='buy';renderShop()};$('shopSellTab').onclick=()=>{shopMode='sell';renderShop()};$('shopRefreshBtn').onclick=refreshShop;$('homeBtn').onclick=()=>{gameover.classList.add('hidden');startScreen.classList.remove('hidden');renderHome()};$('resultEquipBtn').onclick=()=>{equipmentReturn='result';inventoryFilter='all';gameover.classList.add('hidden');renderEquipment();equipmentScreen.classList.remove('hidden')};document.querySelectorAll('.filterBtn').forEach(b=>b.onclick=()=>{inventoryFilter=b.dataset.filter;renderEquipment()});$('howBtn').onclick=()=>alert(`☯️ 무림 생존록 · 7분 원정
 1~4 스테이지에서는 청운문의 산문·영맥·제자·비급을 확보하며 문파를 키웁니다. 매 5번째 스테이지는 경쟁 문파의 총단을 공격하는 문파전입니다. 세로·가로 화면을 모두 지원합니다.

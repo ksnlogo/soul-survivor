@@ -1,17 +1,23 @@
 {
   "id": "./",
-  "name": "소울 서바이버",
-  "short_name": "소울서바이버",
-  "description": "7분 원정, 특수 웨이브, 장비 파밍과 무기·스킬 진화를 즐기는 모바일 생존 액션 RPG",
+  "name": "무림 생존록",
+  "short_name": "무림생존록",
+  "description": "몰락한 청운문을 재건하며 1~4 스테이지에서 문파를 키우고, 매 5번째 스테이지마다 경쟁 문파를 격파하는 무협 생존 액션 RPG",
   "lang": "ko-KR",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone"],
+  "display_override": [
+    "window-controls-overlay",
+    "standalone"
+  ],
   "orientation": "any",
-  "background_color": "#080c17",
-  "theme_color": "#080c17",
-  "categories": ["games", "entertainment"],
+  "background_color": "#11110d",
+  "theme_color": "#11110d",
+  "categories": [
+    "games",
+    "entertainment"
+  ],
   "icons": [
     {
       "src": "icons/icon-192.png",

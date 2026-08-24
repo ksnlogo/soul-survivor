@@ -1,0 +1,133 @@
+{
+  "version": "4.5.0",
+  "art_direction": "수묵화 색감의 정통 무협 + 현대 탑다운 생존 액션 가독성",
+  "sprite_source_size": 64,
+  "tile_source_size": 128,
+  "item_icon_source_size": 128,
+  "priority_assets": [
+    {
+      "id": "player_qingyun",
+      "type": "character",
+      "frames": {
+        "idle": 4,
+        "walk": 6,
+        "attack": 4,
+        "hit": 2
+      },
+      "directions": 4,
+      "priority": 1
+    },
+    {
+      "id": "companion_seojin",
+      "type": "character",
+      "frames": {
+        "idle": 4,
+        "walk": 6,
+        "attack": 4
+      },
+      "directions": 4,
+      "priority": 2
+    },
+    {
+      "id": "enemy_outer_swordsman",
+      "type": "enemy",
+      "frames": {
+        "walk": 6,
+        "attack": 4,
+        "hit": 2
+      },
+      "directions": 4,
+      "priority": 3
+    },
+    {
+      "id": "enemy_light_assassin",
+      "type": "enemy",
+      "frames": {
+        "walk": 6,
+        "attack": 4,
+        "hit": 2
+      },
+      "directions": 4,
+      "priority": 4
+    },
+    {
+      "id": "enemy_iron_body",
+      "type": "enemy",
+      "frames": {
+        "walk": 6,
+        "attack": 4,
+        "hit": 2
+      },
+      "directions": 4,
+      "priority": 5
+    },
+    {
+      "id": "enemy_hidden_weapon",
+      "type": "enemy",
+      "frames": {
+        "walk": 6,
+        "attack": 4,
+        "hit": 2
+      },
+      "directions": 4,
+      "priority": 6
+    },
+    {
+      "id": "bamboo_ground_set",
+      "type": "tileset",
+      "tiles": 8,
+      "priority": 7
+    },
+    {
+      "id": "bamboo_decor_set",
+      "type": "map_decor",
+      "objects": [
+        "bamboo_01",
+        "bamboo_02",
+        "bamboo_cluster",
+        "rock_01",
+        "stone_lantern",
+        "wood_gate",
+        "training_dummy",
+        "broken_cart"
+      ],
+      "priority": 8
+    },
+    {
+      "id": "crate_normal",
+      "type": "prop",
+      "states": [
+        "idle",
+        "hit",
+        "broken"
+      ],
+      "priority": 9
+    },
+    {
+      "id": "effect_sword_slash",
+      "type": "effect",
+      "frames": 5,
+      "priority": 10
+    }
+  ],
+  "audio_final_slots": [
+    "bgm_home.mp3",
+    "bgm_bamboo.mp3",
+    "bgm_snow.mp3",
+    "bgm_canyon.mp3",
+    "bgm_tomb.mp3",
+    "bgm_sect_battle.mp3",
+    "bgm_boss.mp3",
+    "sfx_sword_01.ogg",
+    "sfx_dagger_throw.ogg",
+    "sfx_arrow.ogg",
+    "sfx_fan_qi.ogg",
+    "sfx_hammer.ogg",
+    "sfx_spear.ogg",
+    "sfx_chest_hit.ogg",
+    "sfx_chest_break.ogg",
+    "sfx_item_pickup.ogg",
+    "sfx_rare_drop.ogg",
+    "ui_click.ogg"
+  ]
+}

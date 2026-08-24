@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="무림 생존록" />
-  <title>무림 생존록 v4.3.0</title>
+  <title>무림 생존록 v4.4.1</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/icon-180.png" />
   <meta name="mobile-web-app-capable" content="yes" />
@@ -1210,6 +1210,149 @@ const v43StartBase=start;start=function(){v43SectScreen.classList.add('hidden');
 const v43RenderHomeBase=renderHome;renderHome=function(){v43EnsureProfile();v43RenderHomeBase();const d=V43_DISCIPLES[profile.activeDisciple]||V43_DISCIPLES.swordsman;if(v43Summary)v43Summary.innerHTML=`<div><small>문파 공헌</small><b>${profile.sectContribution}</b></div><div><small>본거지 성장</small><b>Lv.${v43SectLevel()}</b></div><div><small>전투 제자</small><b>${d.icon} ${d.name.split('·')[0].trim()}</b></div>`;const story=document.getElementById('sectStoryText');if(story)story.innerHTML+=`<div class="v43Objective">📌 원정마다 랜덤 부가 임무 1개 · 문파 공헌과 보상 상자 획득</div>`};
 /* ===== END v4.3.0 PATCH ===== */
 
+/* ===== v4.4.0 FIELD UX / COMPANION DISCIPLE / WORLD POPULATION PATCH ===== */
+// 1) 상자를 플레이어/적 스케일에 맞추고, 시작 무기(검)도 확실히 파괴할 수 있도록 보강합니다.
+const v440GenerateWorldBase=generateWorld;
+generateWorld=function(){
+  v440GenerateWorldBase();
+  for(const c of chests){
+    const tier=c.tier||0;
+    c.r=tier>=1?10.5:9;
+    const hp=24+tier*13+Math.min(15,currentStage*1.2);
+    c.maxHp=hp;c.hp=hp;c.hitFlash=0;
+  }
+};
+const v440SpawnRewardChestBase=spawnRewardChest;
+spawnRewardChest=function(x,y,tier=1){
+  const before=chests.length;v440SpawnRewardChestBase(x,y,tier);const c=chests[before];
+  if(c){c.r=10.5+tier*1.15;c.maxHp=34+tier*13+Math.min(18,currentStage);c.hp=c.maxHp;c.hitFlash=0}
+};
+
+// 근접 무기의 실제 판정에도 상자 피해를 복원합니다. v4.1.5에서 적 판정만 남았던 부분의 보정입니다.
+const v440HitSwordBase=hitSword;
+hitSword=function(angle,wd,crit){
+  v440HitSwordBase(angle,wd,crit);
+  const evo=runEvolution==='infernoBlade',r=wd.range*(evo?1.16:1),arc=evo?.72:.58,dmg=player.damage*wd.damageMult*(evo?1.18:1)*(crit?1.8:1);
+  for(const c of chests){if(c.broken)continue;const dx=c.x-player.x,dy=c.y-player.y,d=Math.hypot(dx,dy);if(d<=r+c.r&&Math.abs(angleDiff(Math.atan2(dy,dx),angle))<=arc)damageChest(c,dmg*.9,crit?'#ffd164':'#d8bd72')}
+};
+const v440HitHammerBase=hitHammer;
+hitHammer=function(angle,wd,crit){
+  v440HitHammerBase(angle,wd,crit);const evo=runEvolution==='aegisMaul',cx=player.x+Math.cos(angle)*(evo?48:42),cy=player.y+Math.sin(angle)*(evo?48:42),r=evo?74:54,dmg=player.damage*wd.damageMult*(evo?1.18:1)*(crit?1.8:1);
+  for(const c of chests)if(!c.broken&&Math.hypot(c.x-cx,c.y-cy)<=r+c.r)damageChest(c,dmg*.9,crit?'#ffd164':'#c99b62')
+};
+const v440HitSpearBase=hitSpear;
+hitSpear=function(angle,wd,crit){
+  v440HitSpearBase(angle,wd,crit);const evo=runEvolution==='soulLance',r=wd.range*(evo?1.14:1),x2=player.x+Math.cos(angle)*r,y2=player.y+Math.sin(angle)*r,dmg=player.damage*wd.damageMult*(evo?1.12:1)*(crit?1.8:1);
+  for(const c of chests)if(!c.broken&&pointSegDistance(c.x,c.y,player.x,player.y,x2,y2)<=c.r+8)damageChest(c,dmg*.9,crit?'#ffd164':'#d9d2b6')
+};
+let v440ChestStrikeTimer=0;
+function v440UpdateChestStrike(dt){
+  v440ChestStrikeTimer=Math.max(0,v440ChestStrikeTimer-dt);if(v440ChestStrikeTimer>0||!player)return;
+  const wd=weaponDefs[player.weaponType]||weaponDefs.sword,maxD=['sword','hammer'].includes(player.weaponType)?68:player.weaponType==='spear'?92:Math.min(125,Math.max(82,wd.range*.34));
+  let best=null,bd=maxD*maxD;for(const c of chests){if(c.broken)continue;const d=dist2(player.x,player.y,c.x,c.y);if(d<bd){bd=d;best=c}}
+  if(!best)return;const a=Math.atan2(best.y-player.y,best.x-player.x);player.facing=a;damageChest(best,player.damage*(['sword','hammer','spear'].includes(player.weaponType)?.82:.62),'#d8bd72');
+  attackEffects.push({type:'slash',x:player.x,y:player.y,angle:a,r:Math.min(maxD,54),life:.14,max:.14,color:'#cdb879'});v440ChestStrikeTimer=Math.max(.42,player.fireRate*.82)
+}
+
+// 2) 제자는 플레이어 능력치 프리셋이 아니라 실제로 따라다니며 싸우는 '동행 제자'로 변경합니다.
+Object.assign(V43_DISCIPLES.swordsman,{need:1,desc:'근거리에서 검으로 적을 베는 동행 제자. 제자 숙소 Lv.1에서 해금.',apply:()=>{}});
+Object.assign(V43_DISCIPLES.assassin,{need:2,desc:'원거리에서 비도를 던지는 동행 제자. 제자 숙소 Lv.2에서 해금.',apply:()=>{}});
+Object.assign(V43_DISCIPLES.lancer,{need:3,desc:'긴 장창으로 일직선의 적을 관통하는 동행 제자. 제자 숙소 Lv.3에서 해금.',apply:()=>{}});
+Object.assign(V43_DISCIPLES.brawler,{need:4,desc:'가까운 적 무리를 충격파로 공격하는 동행 제자. 제자 숙소 Lv.4에서 해금.',apply:()=>{}});
+Object.assign(V43_DISCIPLES.healer,{need:5,desc:'전투 중 주기적으로 체력을 회복시키는 동행 제자. 제자 숙소 Lv.5에서 해금.',apply:()=>{}});
+V43_BUILDINGS.dormitory.desc='본거지에 머물고 수련할 제자를 받아들입니다.';
+V43_BUILDINGS.dormitory.effect='Lv.1~5마다 동행 제자 1명 해금';
+
+v43EnsureProfile=function(){
+  profile.sectContribution=Math.max(0,Number(profile.sectContribution)||0);
+  profile.sectBuildings=profile.sectBuildings&&typeof profile.sectBuildings==='object'?profile.sectBuildings:{};
+  for(const k of Object.keys(V43_BUILDINGS))profile.sectBuildings[k]=Math.max(0,Math.min(5,Number(profile.sectBuildings[k])||0));
+  profile.sectManuals=profile.sectManuals&&typeof profile.sectManuals==='object'?profile.sectManuals:{};
+  for(const m of V43_MANUALS)profile.sectManuals[m.id]=Math.max(0,Math.min(3,Number(profile.sectManuals[m.id])||0));
+  const dorm=profile.sectBuildings.dormitory||0;
+  if(profile.activeDisciple&&(!V43_DISCIPLES[profile.activeDisciple]||V43_DISCIPLES[profile.activeDisciple].need>dorm))profile.activeDisciple=null;
+  profile.sideMissionsCompleted=Math.max(0,Number(profile.sideMissionsCompleted)||0);profile.version=Math.max(8,Number(profile.version)||0)
+};
+v43BuildBonus=function(){
+  v43EnsureProfile();const b={damagePct:0,hpPct:0,movePct:0,fireRatePct:0,crit:0,damageReduction:0,regen:0,healPct:0,xpPct:0,shopPct:0},s=profile.sectBuildings;
+  b.damagePct+=s.training*.04;b.xpPct+=s.library*.06;b.shopPct+=s.forge*.03;b.hpPct+=s.medicine*.04;b.healPct+=s.medicine*.06;
+  for(const m of V43_MANUALS){const r=profile.sectManuals[m.id]||0;if(r)m.apply(b,r)}return b
+};
+v43UnlockedDisciples=function(){const dorm=profile.sectBuildings.dormitory||0;return Object.entries(V43_DISCIPLES).filter(([,d])=>d.need<=dorm)};
+v43EnsureProfile();saveProfile();
+
+if(document.getElementById('v43DiscipleBtn'))document.getElementById('v43DiscipleBtn').textContent='🧑‍🤝‍🧑 동행 제자';
+const v440DiscTitle=document.querySelector('#v43DiscipleScreen h2');if(v440DiscTitle)v440DiscTitle.textContent='🧑‍🤝‍🧑 동행 제자';
+const v440DiscSub=document.querySelector('#v43DiscipleScreen .subtitle');if(v440DiscSub)v440DiscSub.innerHTML='본거지의 <b>제자 숙소</b>를 발전시키면 제자가 한 명씩 해금됩니다. 원정 전 한 명을 선택하면 플레이어를 따라다니며 함께 전투합니다.';
+v43RenderDisciples=function(){
+  v43EnsureProfile();const dorm=profile.sectBuildings.dormitory||0,unlocked=v43UnlockedDisciples(),count=document.getElementById('v43DiscipleCount');if(count)count.textContent=`${unlocked.length} / ${Object.keys(V43_DISCIPLES).length}명 해금`;
+  const list=document.getElementById('v43DiscipleList');if(!list)return;
+  const none=`<div class="v43Card v43Disciple"><div class="ico">🚶</div><div><b>혼자 출전</b><p>동행 제자 없이 원정합니다.</p></div><button class="miniBtn ${!profile.activeDisciple?'active':''}" data-v440-disciple="">${!profile.activeDisciple?'선택 중':'선택'}</button></div>`;
+  list.innerHTML=none+Object.entries(V43_DISCIPLES).map(([id,d])=>{const ok=dorm>=d.need,active=profile.activeDisciple===id;return `<div class="v43Card v43Disciple ${ok?'':'locked'}"><div class="ico">${d.icon}</div><div><b>${d.name}</b><p>${d.desc}${ok?'':`<br><b>제자 숙소 Lv.${d.need}</b> 필요`}</p></div><button class="miniBtn ${active?'active':''}" data-v440-disciple="${id}" ${ok?'':'disabled'}>${active?'선택 중':'선택'}</button></div>`}).join('');
+  document.querySelectorAll('[data-v440-disciple]').forEach(btn=>btn.onclick=()=>{const id=btn.dataset.v440Disciple||null;profile.activeDisciple=id;saveProfile();v43RenderDisciples();renderHome();showToast(id?`${V43_DISCIPLES[id].icon} ${V43_DISCIPLES[id].name} 동행 준비`:'🚶 이번 원정은 혼자 출전합니다.')})
+};
+
+let v440Companion=null;
+function v440CompanionAllowed(){const id=profile.activeDisciple,d=V43_DISCIPLES[id];return !!(id&&d&&(profile.sectBuildings.dormitory||0)>=d.need)}
+function v440CreateCompanion(){if(!player||!v440CompanionAllowed())return null;return{id:profile.activeDisciple,x:player.x-24,y:player.y+20,attackCd:.5,supportCd:3.5,phase:rand(0,Math.PI*2)}}
+function v440CompanionTarget(c,range){let best=null,bd=range*range;for(const e of enemies){if(e.hp<=0)continue;const d=dist2(c.x,c.y,e.x,e.y);if(d<bd){bd=d;best=e}}return best}
+function v440UpdateCompanion(dt){
+  const c=v440Companion;if(!c||!player)return;const face=player.facing||0,side=c.id==='assassin'?1:-1,tx=player.x-Math.cos(face)*28-Math.sin(face)*side*16,ty=player.y-Math.sin(face)*28+Math.cos(face)*side*16,dx=tx-c.x,dy=ty-c.y,d=Math.hypot(dx,dy);
+  if(d>260){c.x=tx;c.y=ty}else{const k=Math.min(1,dt*7.5);c.x+=dx*k;c.y+=dy*k}c.attackCd-=dt;c.supportCd-=dt;
+  if(c.id==='healer'&&c.supportCd<=0&&player.hp<player.maxHp*.96){const heal=Math.max(5,player.maxHp*.055);player.hp=Math.min(player.maxHp,player.hp+heal);floatText(player.x,player.y-26,`+${Math.round(heal)} HP`,'#8ebf91');attackEffects.push({type:'ward',x:player.x,y:player.y,r:24,life:.38,max:.38,color:'#8ebf91'});c.supportCd=7.2;showToast('🌿 소연의 치유')}
+  if(c.attackCd>0)return;
+  if(c.id==='swordsman'){const t=v440CompanionTarget(c,92);if(t){const a=Math.atan2(t.y-c.y,t.x-c.x);dealDirectDamage(t,player.damage*.42,false,'#c9bb8c');attackEffects.push({type:'slash',x:c.x,y:c.y,angle:a,r:38,life:.16,max:.16,color:'#c9bb8c'});c.attackCd=1.05}}
+  else if(c.id==='assassin'){const t=v440CompanionTarget(c,285);if(t){const a=Math.atan2(t.y-c.y,t.x-c.x);createBullet(a,{speed:410,range:280,pierce:0,damageMult:1},false,{x:c.x,y:c.y,damage:player.damage*.34,r:2.5,shape:'dagger',weaponType:'skill',color:'#aeb6a5',maxRange:280});c.attackCd=.88}}
+  else if(c.id==='lancer'){const t=v440CompanionTarget(c,175);if(t){const a=Math.atan2(t.y-c.y,t.x-c.x),x2=c.x+Math.cos(a)*165,y2=c.y+Math.sin(a)*165;attackEffects.push({type:'thrust',x:c.x,y:c.y,x2,y2,angle:a,life:.16,max:.16,color:'#c5c0a8'});for(const e of enemies)if(e.hp>0&&pointSegDistance(e.x,e.y,c.x,c.y,x2,y2)<=e.r+6)dealDirectDamage(e,player.damage*.40,false,'#c5c0a8');c.attackCd=1.2}}
+  else if(c.id==='brawler'){const t=v440CompanionTarget(c,78);if(t){const r=52;attackEffects.push({type:'slam',x:c.x,y:c.y,r,life:.24,max:.24,color:'#b38c6c'});for(const e of enemies)if(e.hp>0&&Math.hypot(e.x-c.x,e.y-c.y)<=r+e.r)dealDirectDamage(e,player.damage*.48,false,'#b38c6c');c.attackCd=1.45}}
+  else if(c.id==='healer'){const t=v440CompanionTarget(c,225);if(t){const a=Math.atan2(t.y-c.y,t.x-c.x);createBullet(a,{speed:360,range:220,pierce:0,damageMult:1},false,{x:c.x,y:c.y,damage:player.damage*.20,r:2.2,shape:'soulblade',weaponType:'skill',color:'#8ebf91',maxRange:220});c.attackCd=1.55}}
+}
+function v440DrawCompanion(){
+  const c=v440Companion;if(!c)return;const id=c.id,accent={swordsman:'#bca66d',assassin:'#7d9783',lancer:'#9d8870',brawler:'#a56f5b',healer:'#86a77e'}[id]||'#a99a73',main={swordsman:'#4c5a55',assassin:'#303d38',lancer:'#5b5346',brawler:'#5a4036',healer:'#4d624c'}[id]||'#4c5147';ctx.save();ctx.translate(c.x,c.y+Math.sin(elapsed*6+c.phase)*.5);ctx.fillStyle='rgba(0,0,0,.24)';ctx.beginPath();ctx.ellipse(0,8,7,2.2,0,0,Math.PI*2);ctx.fill();v420DrawRobe(ctx,main,accent,.62);ctx.fillStyle='#c69a75';ctx.beginPath();ctx.arc(0,-7.5,2.9,0,Math.PI*2);ctx.fill();ctx.fillStyle='#17140f';ctx.beginPath();ctx.arc(0,-9,3,Math.PI,Math.PI*2);ctx.fill();ctx.fillRect(-.8,-11.5,1.6,3);ctx.strokeStyle=accent;ctx.lineWidth=1.2;if(id==='swordsman'){ctx.beginPath();ctx.moveTo(4,-1);ctx.lineTo(12,4);ctx.stroke()}else if(id==='assassin'){ctx.beginPath();ctx.moveTo(-5,1);ctx.lineTo(-10,5);ctx.moveTo(5,1);ctx.lineTo(10,5);ctx.stroke()}else if(id==='lancer'){ctx.beginPath();ctx.moveTo(-5,3);ctx.lineTo(14,-3);ctx.stroke()}else if(id==='brawler'){ctx.fillStyle=accent;ctx.beginPath();ctx.arc(-6,3,2,0,Math.PI*2);ctx.arc(6,3,2,0,Math.PI*2);ctx.fill()}else{ctx.fillStyle='#b7a36a';ctx.beginPath();ctx.ellipse(7,2,3,4,0,0,Math.PI*2);ctx.fill()}ctx.restore()
+}
+
+// 3) 전투 정보는 필요한 순간에만 짧게 표시하고, 상시 HUD는 체력/경험치/시간 중심으로 간소화합니다.
+const v440Style=document.createElement('style');v440Style.textContent=`
+.hudTop .pill:nth-child(3),.hudTop .pill:nth-child(4){display:none!important}
+#miniMap{width:64px!important;height:64px!important;border-radius:13px!important;opacity:.86}
+#zoneBadge,#enemyGuide,#weaponBadge,#v43MissionBadge{transition:opacity .18s ease}
+#v43MissionBadge{top:calc(env(safe-area-inset-top) + 76px)!important;min-width:0!important;max-width:68vw!important;padding:6px 9px!important}
+#v43MissionBadge b{font-size:9px!important;margin:0!important}
+@media (orientation:landscape){#miniMap{width:70px!important;height:70px!important}#v43MissionBadge{top:calc(env(safe-area-inset-top) + 56px)!important;max-width:48vw!important}}
+`;document.head.appendChild(v440Style);
+let v440MissionHideTimer=null,v440MissionShowDesc=true,v440ZoneTimer=null,v440GuideTimer=null,v440WeaponTimer=null;
+function v440HideLater(el,ms,key){if(!el)return;el.classList.remove('hidden');if(key)clearTimeout(key);return setTimeout(()=>el.classList.add('hidden'),ms)}
+v43UpdateMissionHUD=function(){
+  if(!v43Mission){v43MissionBadge.classList.add('hidden');return}const extra=v440MissionShowDesc&&!v43Mission.complete?`<span style="display:block;margin-top:2px;font-size:8px;color:#aaa18d">${v43Mission.desc}</span>`:'';
+  v43MissionBadge.innerHTML=`<b>${v43Mission.complete?'✅':'📌'} ${v43Mission.icon} ${v43Mission.name} · ${v43Mission.progress}/${v43Mission.goal}</b>${extra}`;
+  if(running){v43MissionBadge.classList.remove('hidden');clearTimeout(v440MissionHideTimer);v440MissionHideTimer=setTimeout(()=>{v43MissionBadge.classList.add('hidden');v440MissionShowDesc=false},v43Mission.complete?2200:(v440MissionShowDesc?4200:1800))}
+};
+const v440SyncEquipBase=syncPlayerToEquipment;syncPlayerToEquipment=function(...args){const r=v440SyncEquipBase(...args);if(running){clearTimeout(v440WeaponTimer);weaponBadge.classList.remove('hidden');v440WeaponTimer=setTimeout(()=>weaponBadge.classList.add('hidden'),1700)}return r};
+
+// 4) 맵 전체에 기본 개체군을 깔고, 플레이어가 멀리 이동해도 주변 적 밀도가 비지 않도록 재배치합니다.
+let v440PopulationTimer=0;
+function v440WorldEnemyPoint(){for(let n=0;n<80;n++){const x=rand(90,WORLD_W-90),y=rand(90,WORLD_H-90);if(player&&dist2(x,y,player.x,player.y)<420*420)continue;if(obstacles.some(o=>dist2(x,y,o.x,o.y)<(o.r+38)*(o.r+38)))continue;return{x,y}}return{x:rand(100,WORLD_W-100),y:rand(100,WORLD_H-100)}}
+function v440SeedWorldEnemies(){
+  if(!player)return;['basic','fast','tank','ranged','charger'].forEach(t=>seenEnemyTypes.add(t));const target=72+Math.min(24,currentStage*2);
+  while(enemies.length<target&&enemies.length<MAX_LIVE_ENEMIES){const before=enemies.length;spawnEnemy();const e=enemies[before];if(!e)break;const p=v440WorldEnemyPoint();e.x=p.x;e.y=p.y}
+}
+function v440MaintainWorldPopulation(dt){
+  if(!player||stageExpired)return;v440PopulationTimer-=dt;if(v440PopulationTimer>0)return;v440PopulationTimer=.75;
+  const localR=Math.max(720,Math.hypot(W,H)*.82),localR2=localR*localR,targetLocal=18+Math.min(10,Math.floor(stageProgress()*10))+Math.min(5,Math.floor((currentStage-1)/3));
+  let local=0;for(const e of enemies)if(e.hp>0&&dist2(player.x,player.y,e.x,e.y)<localR2)local++;
+  let need=Math.min(6,Math.max(0,targetLocal-local));if(need>0){const far=enemies.filter(e=>e.hp>0&&!['elite','midboss','boss'].includes(e.type)&&dist2(player.x,player.y,e.x,e.y)>(localR*1.65)**2).sort((a,b)=>dist2(player.x,player.y,b.x,b.y)-dist2(player.x,player.y,a.x,a.y));while(need-->0){let e=far.shift();if(e){const p=spawnPointAroundPlayer();e.x=p.x;e.y=p.y;e.attackTimer=rand(.7,1.8);e.chargeState=0}else if(enemies.length<MAX_LIVE_ENEMIES)spawnEnemy()}}
+  const ordinary=enemies.filter(e=>e.hp>0&&!['midboss','boss'].includes(e.type)).length;if(ordinary<70&&enemies.length<MAX_LIVE_ENEMIES){const before=enemies.length;spawnEnemy();const e=enemies[before];if(e){const p=v440WorldEnemyPoint();e.x=p.x;e.y=p.y}}
+}
+
+const v440ResetBase=reset;reset=function(){v440MissionShowDesc=true;v440ResetBase();v440ChestStrikeTimer=0;v440PopulationTimer=.35;v440SeedWorldEnemies();v440Companion=v440CreateCompanion()};
+const v440UpdateBase=update;update=function(dt){v440UpdateBase(dt);if(!running||!player||paused)return;v440UpdateChestStrike(dt);v440UpdateCompanion(dt);v440MaintainWorldPopulation(dt)};
+const v440DrawBase=draw;draw=function(){v440DrawBase();if(!running||!v440Companion)return;ctx.save();ctx.translate(-camera.x,-camera.y);v440DrawCompanion();ctx.restore()};
+const v440StartBase=start;start=function(){const r=v440StartBase();clearTimeout(v440ZoneTimer);clearTimeout(v440GuideTimer);clearTimeout(v440WeaponTimer);zoneBadge.classList.remove('hidden');enemyGuide.classList.remove('hidden');weaponBadge.classList.remove('hidden');v440ZoneTimer=setTimeout(()=>zoneBadge.classList.add('hidden'),2400);v440GuideTimer=setTimeout(()=>enemyGuide.classList.add('hidden'),3000);v440WeaponTimer=setTimeout(()=>weaponBadge.classList.add('hidden'),2800);v43UpdateMissionHUD();return r};
+
+const v440RenderHomeBase=renderHome;renderHome=function(){v440RenderHomeBase();v43EnsureProfile();if(v43Summary){const cells=v43Summary.querySelectorAll('div');if(cells[2]){const d=profile.activeDisciple&&V43_DISCIPLES[profile.activeDisciple];cells[2].innerHTML=`<small>동행 제자</small><b>${d?`${d.icon} ${d.name.split('·')[0].trim()}`:'없음'}</b>`}}};
+/* ===== END v4.4.0 PATCH ===== */
+
+
 
 window.addEventListener('error' ,e=>{const err=e.error||new Error((e.message||'Resource/runtime error')+' @ '+(e.filename||'')+':'+(e.lineno||0)+':'+(e.colno||0));v412Fatal(err,'WINDOW')});
 addEventListener('touchstart',joyStart,{passive:false});addEventListener('touchmove',e=>{if(running)e.preventDefault();joyMove(e)},{passive:false});addEventListener('touchend',joyEnd,{passive:false});addEventListener('touchcancel',joyEnd,{passive:false});addEventListener('mousedown',joyStart);addEventListener('mousemove',joyMove);addEventListener('mouseup',joyEnd);addEventListener('keydown',e=>keys[e.key.toLowerCase()]=true);addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
@@ -1256,5 +1399,105 @@ if('serviceWorker'in navigator){
 }
 
 })();
+
+/* ===== v4.4.1 WUXIA SHOP / EQUIPMENT THEME PATCH ===== */
+// Internal weapon IDs are retained for save compatibility, but every player-facing item is now wuxia themed.
+const V441_WEAPONS={
+ sword:{name:'청강검',icon:'劍',desc:'근거리 검기 참격 · 전방의 여러 적을 베어냅니다'},
+ dagger:{name:'비도',icon:'飛',desc:'빠른 쌍비도 투척 · 높은 치명타와 연속 공격'},
+ bow:{name:'철궁',icon:'弓',desc:'장거리 철전을 발사해 여러 적을 관통합니다'},
+ staff:{name:'백우선',icon:'扇',desc:'철선에 내공을 실어 장풍을 발사 · 중거리 다중 관통'},
+ hammer:{name:'철추',icon:'鎚',desc:'묵직한 철추로 지면을 강타해 충격파를 일으킵니다'},
+ spear:{name:'장창',icon:'槍',desc:'긴 창술로 직선상의 적을 연속 관통합니다'},
+ axe:{name:'쌍월륜',icon:'輪',desc:'한 쌍의 월륜을 회전 투척해 근중거리의 적을 제압합니다'},
+ grimoire:{name:'검부',icon:'符',desc:'검결을 새긴 부적으로 추적 검기를 연속 방출합니다'}
+};
+for(const [id,d] of Object.entries(V441_WEAPONS)){if(weaponDefs[id])Object.assign(weaponDefs[id],d)}
+
+// itemBases.weapon was created before the wuxia renaming layer in older versions, so synchronize it explicitly.
+if(itemBases.weapon)itemBases.weapon.forEach(base=>{const d=V441_WEAPONS[base.weaponType];if(d){base.name=d.name;base.icon=d.icon}});
+
+const V441_GEAR_BASES={
+ head:[['청운 도건','巾'],['야행 두건','影'],['도인의 관','冠'],['현철 철면','鐵']],
+ chest:[['호신 경갑','甲'],['야행 장포','袍'],['운문 도복','衣'],['현철 중갑','鎧']],
+ gloves:[['검객 완갑','腕'],['철사장 수갑','掌'],['운문 수갑','袖'],['매응 완갑','鷹']],
+ legs:[['유운 행전','行'],['현철 각반','甲'],['야행 행전','影'],['운문 각반','雲']],
+ boots:[['답설화','雪'],['유운화','雲'],['금사화','金'],['철갑화','鐵']],
+ accessory:[['호심옥','玉'],['매응옥패','牌'],['탐물패','尋'],['황금전표','票'],['회춘옥','生'],['질풍패','風'],['호신부','符'],['벽력패','雷']]
+};
+for(const [slot,defs] of Object.entries(V441_GEAR_BASES))if(itemBases[slot])itemBases[slot].forEach((base,i)=>{if(defs[i]){base.name=defs[i][0];base.icon=defs[i][1]}});
+
+// Martial-arts styled affix vocabulary.
+affixPools.weapon=[['damage',3,'강기'],['fireRatePct',5,'연환'],['crit',3,'파혈'],['bulletSize',1,'장력'],['movePct',2,'경신']];
+affixPools.head=[['maxHp',8,'호체'],['crit',2,'명경'],['damageReduction',1,'철벽'],['damage',2,'투기']];
+affixPools.chest=[['maxHp',12,'호체'],['damageReduction',1.5,'금강'],['regen',.08,'운기'],['damage',2,'강기']];
+affixPools.gloves=[['fireRatePct',5,'연환'],['crit',3,'매응'],['damage',3,'장력'],['movePct',2,'경신']];
+affixPools.legs=[['movePct',4,'경공'],['maxHp',8,'호체'],['damageReduction',1,'금강'],['crit',2,'잠행']];
+affixPools.boots=[['movePct',5,'경공'],['magnet',10,'탐물'],['goldBonus',5,'재운'],['maxHp',6,'호체']];
+affixPools.accessory=[['damage',3,'강기'],['crit',3,'심안'],['fireRatePct',4,'연환'],['maxHp',8,'호체'],['damageReduction',1,'금강'],['magnet',12,'탐물'],['goldBonus',5,'재운'],['regen',.07,'운기']];
+
+Object.assign(evolutionDefs.infernoBlade,{name:'적염검',icon:'炎劍',desc:'두 겹의 적염 검기와 화염장 강화'});
+Object.assign(evolutionDefs.stormFangs,{name:'벽력비도',icon:'雷飛',desc:'다섯 자루의 벽력 비도를 연속 투척하고 벽력지를 강화'});
+Object.assign(evolutionDefs.thunderBow,{name:'천뢰궁',icon:'雷弓',desc:'3연발 관통 철전과 명중 연쇄 피해'});
+Object.assign(evolutionDefs.glacialStaff,{name:'한빙백우선',icon:'氷扇',desc:'세 갈래 한빙 장풍과 한빙장 강화'});
+Object.assign(evolutionDefs.aegisMaul,{name:'금강철추',icon:'剛鎚',desc:'이중 충격파와 강타 시 호신강기 획득'});
+Object.assign(evolutionDefs.soulLance,{name:'회풍관일창',icon:'風槍',desc:'세 갈래 관통 창술과 회풍검기 강화'});
+Object.assign(evolutionDefs.volcanicAxes,{name:'염화쌍월륜',icon:'炎輪',desc:'여덟 개의 염화 월륜을 사방으로 투척'});
+Object.assign(evolutionDefs.astralCodex,{name:'천성검부',icon:'星符',desc:'다섯 갈래 추적 검기와 유성검우 강화'});
+
+const V441_PREFIXES={
+ common:['낡은','단련된','수련용'],
+ rare:['청명의','정예의','백련의'],
+ epic:['명문의','현철의','절정의'],
+ legendary:['대종사의','무림명기의','천강의'],
+ mythic:['천하제일의','무극의','태허의']
+};
+function v441GenerateItem(itemLevel=1,forceBetter=false,forcedSlot=null){
+  let slot=forcedSlot;
+  if(!slot){const typeRoll=Math.random();if(typeRoll<.25)slot='weapon';else if(typeRoll<.72)slot=pick(['head','chest','gloves','legs','boots']);else slot='accessory'}
+  const base=pick(itemBases[slot]),rarity=chooseRarity(forceBetter),ri=rarityInfo[rarity],mult=ri.mult*(1+(itemLevel-1)*.13),stats={};
+  for(const [k,v] of Object.entries(base.stats)){const n=v*mult*rand(.9,1.12);stats[k]=k==='regen'?round(n,2):round(n,1)}
+  const affixes=[],pool=affixPools[slot];
+  for(let n=0;n<ri.affixes;n++){
+    const candidates=pool.filter(x=>!affixes.some(a=>a.key===x[0]));if(!candidates.length)break;
+    const [k,v,label]=pick(candidates),amount=v*(1+(itemLevel-1)*.08)*rand(.85,1.18)*(rarity==='mythic'?1.15:1);
+    stats[k]=round((stats[k]||0)+amount,k==='regen'?2:1);
+    affixes.push({key:k,name:`${label} · ${statLabel(k,amount)[0]} ${statLabel(k,amount)[1]}`})
+  }
+  let setId=null;if(['head','chest','gloves','legs','boots'].includes(slot)&&['epic','legendary','mythic'].includes(rarity)&&Math.random()<(rarity==='mythic'?.7:rarity==='legendary'?.5:.34))setId=pick(Object.keys(setDefs));
+  const setPrefix=setId?`${setDefs[setId].name} · `:'';
+  const item={id:uid(),slot,name:`${setPrefix}${pick(V441_PREFIXES[rarity])} ${base.name}`,icon:base.icon,rarity,level:itemLevel,stats,affixes,weaponType:base.weaponType||null,setId};item.score=calcItemScore(item);return item
+}
+generateItem=v441GenerateItem;
+
+// The merchant now carries a readable mix instead of five completely random pieces:
+// 1 weapon, 2 armor pieces, 1 accessory and 1 higher-grade recommendation.
+createShopStock=function(){
+  const stage=Math.max(1,profile.highestStage||1),stock=[],armorSlots=['head','chest','gloves','legs','boots'];
+  const missingArmor=armorSlots.filter(s=>!profile.equipped?.[s]);
+  const firstArmor=missingArmor.length?pick(missingArmor):pick(armorSlots);
+  let secondPool=armorSlots.filter(s=>s!==firstArmor),secondArmor=(missingArmor.filter(s=>s!==firstArmor)[0]||pick(secondPool));
+  const offers=[
+    v441GenerateItem(stage,Math.random()<.32,'weapon'),
+    v441GenerateItem(stage,Math.random()<.34,firstArmor),
+    v441GenerateItem(stage,Math.random()<.38,secondArmor),
+    v441GenerateItem(stage,Math.random()<.38,'accessory')
+  ];
+  const missingAll=['head','chest','gloves','legs','boots','accessory'].filter(s=>s==='accessory'?!(profile.equipped?.accessory1&&profile.equipped?.accessory2&&profile.equipped?.accessory3):!profile.equipped?.[s]);
+  offers.push(v441GenerateItem(stage,true,missingAll.length?pick(missingAll):null));
+  for(const item of offers)stock.push({offerId:uid(),type:'item',item,price:shopItemPrice(item),sold:false});
+  profile.shopStock=stock;saveProfile()
+};
+
+// Existing stock may contain fantasy-era item snapshots. Refresh it once without charging the player.
+if(!profile.wuxiaShopV441){profile.shopStock=[];profile.shopRefreshes=0;profile.wuxiaShopV441=true;saveProfile()}
+
+// Update current equipped weapon icons/names from old snapshots where possible without changing stats.
+const V441_LEGACY_WEAPON_ENDINGS={sword:/((장검|청강검))$/,dagger:/((단검|비도))$/,bow:/((활|철궁))$/,staff:/((지팡이|죽장|철선|백우선))$/,hammer:/((해머|철추))$/,spear:/((장창|창))$/,axe:/((도끼|쌍월도|쌍월륜))$/,grimoire:/((마법서|검결 비급|검부))$/};
+for(const item of profile.inventory||[]){if(!item?.weaponType||!V441_WEAPONS[item.weaponType])continue;const d=V441_WEAPONS[item.weaponType],re=V441_LEGACY_WEAPON_ENDINGS[item.weaponType];item.icon=d.icon;if(re&&re.test(item.name||''))item.name=(item.name||'').replace(re,d.name)}
+saveProfile();
+try{renderHome()}catch(e){}
+/* ===== END v4.4.1 PATCH ===== */
+
 </script>
 </body></html>

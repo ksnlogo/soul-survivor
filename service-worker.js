@@ -1,4 +1,4 @@
-const CACHE_NAME = 'murim-survival-v4-5-3-pwa-1';
+const CACHE_NAME = 'murim-survival-v4-5-4-pwa-1';
 const APP_SHELL = [
   './',
   './index.html',
@@ -8,6 +8,7 @@ const APP_SHELL = [
   './js/game.js',
   './js/art.js',
   './js/integration.js',
+  './js/combat-polish.js',
   './assets/audio/bgm_bamboo.mp3',
   './assets/audio/bgm_boss.mp3',
   './assets/audio/bgm_canyon.mp3',

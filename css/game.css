@@ -90,3 +90,11 @@ body{background:radial-gradient(circle at 50% 0,#1a1c14 0,#0d0f0c 48%,#080a08 10
   #audioSettingsScreen .panel{width:min(94vw,420px)}
 }
 /* ===== END v4.5.0 ART VERTICAL SLICE ===== */
+
+
+/* ===== v4.5.1 AUDIO / PICTORIAL ICON PATCH ===== */
+.shopCard .offerIcon,.rewardItem .riIcon,.homeSlot .hi{font-family:Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif;filter:saturate(1.04)}
+.shopCard .offerIcon{display:grid;place-items:center;width:42px;height:42px;border-radius:11px;background:rgba(225,205,151,.07);border:1px solid rgba(225,205,151,.12);font-size:27px;margin-bottom:2px}
+.itemDetail .itemIcon{font-family:Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif;background:radial-gradient(circle at 50% 42%,rgba(230,211,158,.11),rgba(13,23,42,.95));font-size:34px}
+#audioSettingsScreen #audioStateText{font-size:9px;color:#d8c58c}
+/* ===== END v4.5.1 PATCH ===== */

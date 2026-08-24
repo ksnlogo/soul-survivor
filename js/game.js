@@ -8,14 +8,14 @@ const STORAGE_KEY='soulSurvivorProfileV5',OLD_KEY='soulSurvivorProfileV4',OLDER_
 const rarityInfo={common:{name:'일반',class:'common',mult:1,affixes:0},rare:{name:'희귀',class:'rare',mult:1.42,affixes:1},epic:{name:'영웅',class:'epic',mult:1.95,affixes:2},legendary:{name:'전설',class:'legendary',mult:2.7,affixes:3},mythic:{name:'신화',class:'mythic',mult:3.65,affixes:4}};
 const equipSlots={weapon:{name:'무기',icon:'⚔️',category:'weapon'},head:{name:'머리',icon:'🪖',category:'armor'},chest:{name:'갑옷',icon:'🛡️',category:'armor'},gloves:{name:'장갑',icon:'🧤',category:'armor'},legs:{name:'다리',icon:'👖',category:'armor'},boots:{name:'신발',icon:'👢',category:'armor'},accessory1:{name:'장신구 1',icon:'💍',category:'accessory'},accessory2:{name:'장신구 2',icon:'💎',category:'accessory'},accessory3:{name:'장신구 3',icon:'📿',category:'accessory'}};
 const weaponDefs={
- sword:{name:'청강검',icon:'劍',desc:'근거리 검기 참격 · 전방의 여러 적을 베어냅니다',fireRate:.72,range:84,speed:0,size:4.0,damageMult:1.35,count:1,pierce:0,spread:0,attackKind:'slash'},
- dagger:{name:'비도',icon:'飛',desc:'빠른 쌍비도 투척 · 높은 치명타와 연속 공격',fireRate:.38,range:270,speed:570,size:3.0,damageMult:.72,count:2,pierce:0,spread:.12,critBonus:6,attackKind:'projectile'},
- bow:{name:'철궁',icon:'弓',desc:'장거리 철전을 발사해 여러 적을 관통합니다',fireRate:.74,range:380,speed:690,size:2.8,damageMult:1.3,count:1,pierce:1,spread:0,critBonus:8,attackKind:'projectile'},
- staff:{name:'백우선',icon:'扇',desc:'철선에 내공을 실어 장풍을 발사 · 중거리 다중 관통',fireRate:.86,range:310,speed:420,size:6.0,damageMult:1.45,count:1,pierce:2,spread:0,attackKind:'projectile'},
- hammer:{name:'철추',icon:'鎚',desc:'묵직한 철추로 지면을 강타해 충격파를 일으킵니다',fireRate:1.18,range:104,speed:0,size:6.8,damageMult:2.15,count:1,pierce:0,spread:0,attackKind:'slam'},
- spear:{name:'장창',icon:'槍',desc:'긴 창술로 직선상의 적을 연속 관통합니다',fireRate:.8,range:155,speed:0,size:3.5,damageMult:1.48,count:1,pierce:99,spread:0,attackKind:'thrust'},
- axe:{name:'쌍월륜',icon:'輪',desc:'한 쌍의 월륜을 회전 투척해 근중거리의 적을 제압합니다',fireRate:1.03,range:245,speed:400,size:5.1,damageMult:.96,count:4,pierce:1,spread:Math.PI*2,attackKind:'projectile'},
- grimoire:{name:'검부',icon:'符',desc:'검결을 새긴 부적으로 추적 검기를 연속 방출합니다',fireRate:.98,range:325,speed:390,size:4.4,damageMult:.84,count:3,pierce:0,spread:.42,attackKind:'homing'}
+ sword:{name:'청강검',icon:'⚔️',desc:'근거리 검기 참격 · 전방의 여러 적을 베어냅니다',fireRate:.72,range:84,speed:0,size:4.0,damageMult:1.35,count:1,pierce:0,spread:0,attackKind:'slash'},
+ dagger:{name:'비도',icon:'🗡️',desc:'빠른 쌍비도 투척 · 높은 치명타와 연속 공격',fireRate:.38,range:270,speed:570,size:3.0,damageMult:.72,count:2,pierce:0,spread:.12,critBonus:6,attackKind:'projectile'},
+ bow:{name:'철궁',icon:'🏹',desc:'장거리 철전을 발사해 여러 적을 관통합니다',fireRate:.74,range:380,speed:690,size:2.8,damageMult:1.3,count:1,pierce:1,spread:0,critBonus:8,attackKind:'projectile'},
+ staff:{name:'백우선',icon:'🪭',desc:'철선에 내공을 실어 장풍을 발사 · 중거리 다중 관통',fireRate:.86,range:310,speed:420,size:6.0,damageMult:1.45,count:1,pierce:2,spread:0,attackKind:'projectile'},
+ hammer:{name:'철추',icon:'🔨',desc:'묵직한 철추로 지면을 강타해 충격파를 일으킵니다',fireRate:1.18,range:104,speed:0,size:6.8,damageMult:2.15,count:1,pierce:0,spread:0,attackKind:'slam'},
+ spear:{name:'장창',icon:'🔱',desc:'긴 창술로 직선상의 적을 연속 관통합니다',fireRate:.8,range:155,speed:0,size:3.5,damageMult:1.48,count:1,pierce:99,spread:0,attackKind:'thrust'},
+ axe:{name:'쌍월륜',icon:'🥏',desc:'한 쌍의 월륜을 회전 투척해 근중거리의 적을 제압합니다',fireRate:1.03,range:245,speed:400,size:5.1,damageMult:.96,count:4,pierce:1,spread:Math.PI*2,attackKind:'projectile'},
+ grimoire:{name:'검부',icon:'📜',desc:'검결을 새긴 부적으로 추적 검기를 연속 방출합니다',fireRate:.98,range:325,speed:390,size:4.4,damageMult:.84,count:3,pierce:0,spread:.42,attackKind:'homing'}
 }
 
 const skillDefs={
@@ -27,14 +27,14 @@ const skillDefs={
  ward:{name:'금종조',icon:'🛡️',desc:'호신강기로 피해를 흡수하는 금종의 기운을 만듭니다.',baseCooldown:10.5,price:240,color:'#72efc1'}
 };
 const evolutionDefs={
- infernoBlade:{weapon:'sword',skill:'flame',name:'적염검',icon:'炎劍',color:'#ff9b62',desc:'두 겹의 적염 검기와 화염장 강화'},
- stormFangs:{weapon:'dagger',skill:'lightning',name:'벽력비도',icon:'雷飛',color:'#92d9ff',desc:'다섯 자루의 벽력 비도를 연속 투척하고 벽력지를 강화'},
- thunderBow:{weapon:'bow',skill:'lightning',name:'천뢰궁',icon:'雷弓',color:'#ffe36f',desc:'3연발 관통 철전과 명중 연쇄 피해'},
- glacialStaff:{weapon:'staff',skill:'frost',name:'한빙백우선',icon:'氷扇',color:'#8ce9ff',desc:'세 갈래 한빙 장풍과 한빙장 강화'},
- aegisMaul:{weapon:'hammer',skill:'ward',name:'금강철추',icon:'剛鎚',color:'#8df2d2',desc:'이중 충격파와 강타 시 호신강기 획득'},
- soulLance:{weapon:'spear',skill:'blades',name:'회풍관일창',icon:'風槍',color:'#c9a7ff',desc:'세 갈래 관통 창술과 회풍검기 강화'},
- volcanicAxes:{weapon:'axe',skill:'flame',name:'염화쌍월륜',icon:'炎輪',color:'#ff8b58',desc:'여덟 개의 염화 월륜을 사방으로 투척'},
- astralCodex:{weapon:'grimoire',skill:'meteor',name:'천성검부',icon:'星符',color:'#d9a1ff',desc:'다섯 갈래 추적 검기와 유성검우 강화'}
+ infernoBlade:{weapon:'sword',skill:'flame',name:'적염검',icon:'🔥⚔️',color:'#ff9b62',desc:'두 겹의 적염 검기와 화염장 강화'},
+ stormFangs:{weapon:'dagger',skill:'lightning',name:'벽력비도',icon:'⚡🗡️',color:'#92d9ff',desc:'다섯 자루의 벽력 비도를 연속 투척하고 벽력지를 강화'},
+ thunderBow:{weapon:'bow',skill:'lightning',name:'천뢰궁',icon:'⚡🏹',color:'#ffe36f',desc:'3연발 관통 철전과 명중 연쇄 피해'},
+ glacialStaff:{weapon:'staff',skill:'frost',name:'한빙백우선',icon:'❄️🪭',color:'#8ce9ff',desc:'세 갈래 한빙 장풍과 한빙장 강화'},
+ aegisMaul:{weapon:'hammer',skill:'ward',name:'금강철추',icon:'🛡️🔨',color:'#8df2d2',desc:'이중 충격파와 강타 시 호신강기 획득'},
+ soulLance:{weapon:'spear',skill:'blades',name:'회풍관일창',icon:'🌪️🔱',color:'#c9a7ff',desc:'세 갈래 관통 창술과 회풍검기 강화'},
+ volcanicAxes:{weapon:'axe',skill:'flame',name:'염화쌍월륜',icon:'🔥🥏',color:'#ff8b58',desc:'여덟 개의 염화 월륜을 사방으로 투척'},
+ astralCodex:{weapon:'grimoire',skill:'meteor',name:'천성검부',icon:'🌟📜',color:'#d9a1ff',desc:'다섯 갈래 추적 검기와 유성검우 강화'}
 };
 const WAVE_SCHEDULE=[
  {start:45,duration:18,type:'rush',name:'질풍 습격',icon:'⚡',desc:'빠른 적이 사방에서 몰려옵니다'},
@@ -45,26 +45,26 @@ const WAVE_SCHEDULE=[
 
 const itemBases={
  weapon:Object.entries(weaponDefs).map(([weaponType,w])=>({name:w.name,icon:w.icon,weaponType,stats:weaponType==='dagger'?{damage:3,fireRatePct:8,crit:3}:weaponType==='bow'?{damage:5,crit:4}:weaponType==='staff'?{damage:6,bulletSize:1}:weaponType==='hammer'?{damage:9,maxHp:4}:weaponType==='spear'?{damage:6,movePct:2}:weaponType==='axe'?{damage:5,maxHp:5}:weaponType==='grimoire'?{damage:5,magnet:8}:{damage:6,maxHp:3}})),
- head:[{name:'청운 도건',icon:'巾',stats:{maxHp:12,damageReduction:1}},{name:'야행 두건',icon:'影',stats:{crit:3,movePct:2}},{name:'도인의 관',icon:'冠',stats:{damage:3,magnet:7}},{name:'현철 철면',icon:'鐵',stats:{maxHp:17,damageReduction:1.5}}],
- chest:[{name:'호신 경갑',icon:'甲',stats:{maxHp:24,damageReduction:2.5}},{name:'야행 장포',icon:'袍',stats:{maxHp:10,movePct:5}},{name:'운문 도복',icon:'衣',stats:{maxHp:17,damage:2}},{name:'현철 중갑',icon:'鎧',stats:{maxHp:28,damageReduction:2}}],
- gloves:[{name:'검객 완갑',icon:'腕',stats:{fireRatePct:8,crit:2}},{name:'철사장 수갑',icon:'掌',stats:{damage:5,maxHp:5}},{name:'운문 수갑',icon:'袖',stats:{damage:3,fireRatePct:5}},{name:'매응 완갑',icon:'鷹',stats:{crit:4,movePct:2}}],
- legs:[{name:'유운 행전',icon:'行',stats:{movePct:5,maxHp:7}},{name:'현철 각반',icon:'甲',stats:{maxHp:13,damageReduction:1.5}},{name:'야행 행전',icon:'影',stats:{movePct:7,crit:2}},{name:'운문 각반',icon:'雲',stats:{damage:2,maxHp:9}}],
- boots:[{name:'답설화',icon:'雪',stats:{movePct:8}},{name:'유운화',icon:'雲',stats:{movePct:4,magnet:12}},{name:'금사화',icon:'金',stats:{movePct:3,goldBonus:7}},{name:'철갑화',icon:'鐵',stats:{maxHp:8,damageReduction:1}}],
- accessory:[{name:'호심옥',icon:'玉',stats:{damage:5}},{name:'매응옥패',icon:'牌',stats:{crit:5}},{name:'탐물패',icon:'尋',stats:{magnet:22}},{name:'황금전표',icon:'票',stats:{goldBonus:12,magnet:5}},{name:'회춘옥',icon:'生',stats:{maxHp:14,regen:.14}},{name:'질풍패',icon:'風',stats:{fireRatePct:7,movePct:3}},{name:'호신부',icon:'符',stats:{damageReduction:2,maxHp:8}},{name:'벽력패',icon:'雷',stats:{damage:3,crit:2}}]
+ head:[{name:'청운 도건',icon:'🧢',stats:{maxHp:12,damageReduction:1}},{name:'야행 두건',icon:'🥷',stats:{crit:3,movePct:2}},{name:'도인의 관',icon:'👒',stats:{damage:3,magnet:7}},{name:'현철 철면',icon:'🪖',stats:{maxHp:17,damageReduction:1.5}}],
+ chest:[{name:'호신 경갑',icon:'🥋',stats:{maxHp:24,damageReduction:2.5}},{name:'야행 장포',icon:'🧥',stats:{maxHp:10,movePct:5}},{name:'운문 도복',icon:'🥋',stats:{maxHp:17,damage:2}},{name:'현철 중갑',icon:'🛡️',stats:{maxHp:28,damageReduction:2}}],
+ gloves:[{name:'검객 완갑',icon:'🧤',stats:{fireRatePct:8,crit:2}},{name:'철사장 수갑',icon:'🥊',stats:{damage:5,maxHp:5}},{name:'운문 수갑',icon:'🧤',stats:{damage:3,fireRatePct:5}},{name:'매응 완갑',icon:'🤲',stats:{crit:4,movePct:2}}],
+ legs:[{name:'유운 행전',icon:'👖',stats:{movePct:5,maxHp:7}},{name:'현철 각반',icon:'🦿',stats:{maxHp:13,damageReduction:1.5}},{name:'야행 행전',icon:'👖',stats:{movePct:7,crit:2}},{name:'운문 각반',icon:'🦿',stats:{damage:2,maxHp:9}}],
+ boots:[{name:'답설화',icon:'🥾',stats:{movePct:8}},{name:'유운화',icon:'🥾',stats:{movePct:4,magnet:12}},{name:'금사화',icon:'👢',stats:{movePct:3,goldBonus:7}},{name:'철갑화',icon:'🥾',stats:{maxHp:8,damageReduction:1}}],
+ accessory:[{name:'호심옥',icon:'📿',stats:{damage:5}},{name:'매응옥패',icon:'🧿',stats:{crit:5}},{name:'탐물패',icon:'🧭',stats:{magnet:22}},{name:'황금전표',icon:'🪙',stats:{goldBonus:12,magnet:5}},{name:'회춘옥',icon:'💚',stats:{maxHp:14,regen:.14}},{name:'질풍패',icon:'💨',stats:{fireRatePct:7,movePct:3}},{name:'호신부',icon:'🪬',stats:{damageReduction:2,maxHp:8}},{name:'벽력패',icon:'⚡',stats:{damage:3,crit:2}}]
 };
-const setDefs={shadow:{name:'유영비갑',icon:'影',bonuses:{2:{fireRatePct:8},3:{crit:6},5:{movePct:8,damage:4}}},guardian:{name:'금강호갑',icon:'剛',bonuses:{2:{maxHp:18},3:{damageReduction:4},5:{regen:.25,maxHp:25}}},sage:{name:'청명운문',icon:'明',bonuses:{2:{magnet:18},3:{damage:5},5:{crit:5,fireRatePct:6}}}};
+const setDefs={shadow:{name:'유영비갑',icon:'🌑',bonuses:{2:{fireRatePct:8},3:{crit:6},5:{movePct:8,damage:4}}},guardian:{name:'금강호갑',icon:'🛡️',bonuses:{2:{maxHp:18},3:{damageReduction:4},5:{regen:.25,maxHp:25}}},sage:{name:'청명운문',icon:'☯️',bonuses:{2:{magnet:18},3:{damage:5},5:{crit:5,fireRatePct:6}}}};
 const affixPools={weapon:[['damage',3,'강기'],['fireRatePct',5,'연환'],['crit',3,'파혈'],['bulletSize',1,'장력'],['movePct',2,'경신']],head:[['maxHp',8,'호체'],['crit',2,'명경'],['damageReduction',1,'철벽'],['damage',2,'투기']],chest:[['maxHp',12,'호체'],['damageReduction',1.5,'금강'],['regen',.08,'운기'],['damage',2,'강기']],gloves:[['fireRatePct',5,'연환'],['crit',3,'매응'],['damage',3,'장력'],['movePct',2,'경신']],legs:[['movePct',4,'경공'],['maxHp',8,'호체'],['damageReduction',1,'금강'],['crit',2,'잠행']],boots:[['movePct',5,'경공'],['magnet',10,'탐물'],['goldBonus',5,'재운'],['maxHp',6,'호체']],accessory:[['damage',3,'강기'],['crit',3,'심안'],['fireRatePct',4,'연환'],['maxHp',8,'호체'],['damageReduction',1,'금강'],['magnet',12,'탐물'],['goldBonus',5,'재운'],['regen',.07,'운기']]};
 const WORLD_W=7400,WORLD_H=7400,MID_BOSS_AT=170,MAX_LIVE_ENEMIES=220;let W=innerWidth,H=innerHeight,dpr=Math.min(devicePixelRatio||1,2),running=false,paused=false,last=0,elapsed=0,spawnTimer=0,shotTimer=0,kills=0,level=1,xp=0,xpNeed=9,runGold=0,runSoulXp=0,bossesDefeated=0,bossSpawned=false,midBossSpawned=false,midBossDefeated=false,finalBossDefeated=false,stageExpired=false,currentStage=1,itemModalResume=false,toastTimer=null,equipmentReturn='home',skillReturn='home',shopReturn='home',shopMode='buy',inventoryFilter='all',joyId=null,joyOrigin={x:0,y:0},camera={x:0,y:0},runEvolution=null,currentWave=null,lastWaveKey=null;
 let enemies=[],bullets=[],enemyBullets=[],bossHazards=[],attackEffects=[],gems=[],coins=[],lootOrbs=[],particles=[],texts=[],runLoot=[],runSkillLevels={},skillCooldowns={},profile=loadProfile(),player=null,input={x:0,y:0};const keys={};
 let obstacles=[],chests=[],springs=[],terrainPatches=[],groundDecos=[],fogWisps=[],mapLandmarks=[],mapPaths=[],currentMap=null,lastMapId=null,seenEnemyTypes=new Set();
 const MAP_THEMES=[
- {id:'forest',icon:'竹',name:'청죽림',tag:'경공·군집',ground:'#101b1d',sky1:'#0b1820',sky2:'#05090d',accent:'#72efc1',patch:['rgba(43,67,55,.34)','rgba(47,55,45,.28)','rgba(29,52,55,.36)','rgba(62,48,43,.20)'],road:'rgba(70,82,74,.46)',deco:'rgba(104,130,96,.34)',enemyTint:'#72efc1',spawn:.98,roster:'swarm'},
- {id:'frost',icon:'雪',name:'설봉고도',tag:'암기·한기',ground:'#111927',sky1:'#101c31',sky2:'#070b15',accent:'#8fdcff',patch:['rgba(54,78,105,.30)','rgba(44,62,88,.28)','rgba(88,110,132,.20)','rgba(35,52,74,.30)'],road:'rgba(92,112,134,.42)',deco:'rgba(143,216,255,.28)',enemyTint:'#8fdcff',spawn:1.05,roster:'ranged'},
- {id:'ember',icon:'赤',name:'적벽협곡',tag:'외공·돌진',ground:'#1b1513',sky1:'#22120f',sky2:'#090706',accent:'#ff9a62',patch:['rgba(92,48,31,.28)','rgba(66,45,36,.30)','rgba(114,56,31,.18)','rgba(59,37,31,.30)'],road:'rgba(112,76,61,.38)',deco:'rgba(255,145,89,.24)',enemyTint:'#ff9a62',spawn:1.08,roster:'brute'},
- {id:'crypt',icon:'墓',name:'고묘지궁',tag:'기문·변칙',ground:'#17141c',sky1:'#181124',sky2:'#08070d',accent:'#c391ff',patch:['rgba(70,51,82,.28)','rgba(55,48,68,.30)','rgba(87,63,92,.20)','rgba(42,38,52,.32)'],road:'rgba(83,71,91,.40)',deco:'rgba(195,145,255,.24)',enemyTint:'#c391ff',spawn:1.02,roster:'arcane'}
+ {id:'forest',icon:'🎋',name:'청죽림',tag:'경공·군집',ground:'#101b1d',sky1:'#0b1820',sky2:'#05090d',accent:'#72efc1',patch:['rgba(43,67,55,.34)','rgba(47,55,45,.28)','rgba(29,52,55,.36)','rgba(62,48,43,.20)'],road:'rgba(70,82,74,.46)',deco:'rgba(104,130,96,.34)',enemyTint:'#72efc1',spawn:.98,roster:'swarm'},
+ {id:'frost',icon:'❄️',name:'설봉고도',tag:'암기·한기',ground:'#111927',sky1:'#101c31',sky2:'#070b15',accent:'#8fdcff',patch:['rgba(54,78,105,.30)','rgba(44,62,88,.28)','rgba(88,110,132,.20)','rgba(35,52,74,.30)'],road:'rgba(92,112,134,.42)',deco:'rgba(143,216,255,.28)',enemyTint:'#8fdcff',spawn:1.05,roster:'ranged'},
+ {id:'ember',icon:'🔥',name:'적벽협곡',tag:'외공·돌진',ground:'#1b1513',sky1:'#22120f',sky2:'#090706',accent:'#ff9a62',patch:['rgba(92,48,31,.28)','rgba(66,45,36,.30)','rgba(114,56,31,.18)','rgba(59,37,31,.30)'],road:'rgba(112,76,61,.38)',deco:'rgba(255,145,89,.24)',enemyTint:'#ff9a62',spawn:1.08,roster:'brute'},
+ {id:'crypt',icon:'🪦',name:'고묘지궁',tag:'기문·변칙',ground:'#17141c',sky1:'#181124',sky2:'#08070d',accent:'#c391ff',patch:['rgba(70,51,82,.28)','rgba(55,48,68,.30)','rgba(87,63,92,.20)','rgba(42,38,52,.32)'],road:'rgba(83,71,91,.40)',deco:'rgba(195,145,255,.24)',enemyTint:'#c391ff',spawn:1.02,roster:'arcane'}
 ];
-const ENEMY_INFO={basic:{icon:'劍',name:'외문 무사',desc:'정면에서 검을 들고 꾸준히 압박'},fast:{icon:'輕',name:'경공 자객',desc:'빠른 경공과 지그재그 이동으로 측면을 파고듦'},tank:{icon:'鐵',name:'철포삼 고수',desc:'높은 체력 · 근접하면 내공 충격파'},ranged:{icon:'暗',name:'암기수',desc:'거리를 유지하며 비도와 암기를 투척'},charger:{icon:'霸',name:'패도 무사',desc:'자세를 잡은 뒤 직선 돌진'},elite:{icon:'內',name:'내문 고수',desc:'강화된 내공과 높은 전리품'},midboss:{icon:'護',name:'호법',desc:'문파의 고유 절기를 사용하는 중간 고수'},boss:{icon:'主',name:'장문인',desc:'복합 절기와 강력한 내공을 사용하는 문파 수장'}};
-const MAP_GUIDES={swarm:'劍 외문 무사 · 輕 경공 자객 · 鐵 철포삼 고수',ranged:'暗 암기수 · 鐵 철포삼 고수 · 輕 경공 자객',brute:'霸 패도 무사 · 鐵 철포삼 고수 · 輕 경공 자객',arcane:'暗 기문 암기수 · 霸 패도 무사 · 輕 변칙 경공'};
+const ENEMY_INFO={basic:{icon:'⚔️',name:'외문 무사',desc:'정면에서 검을 들고 꾸준히 압박'},fast:{icon:'🥷',name:'경공 자객',desc:'빠른 경공과 지그재그 이동으로 측면을 파고듦'},tank:{icon:'🛡️',name:'철포삼 고수',desc:'높은 체력 · 근접하면 내공 충격파'},ranged:{icon:'🎯',name:'암기수',desc:'거리를 유지하며 비도와 암기를 투척'},charger:{icon:'💥',name:'패도 무사',desc:'자세를 잡은 뒤 직선 돌진'},elite:{icon:'✨',name:'내문 고수',desc:'강화된 내공과 높은 전리품'},midboss:{icon:'🏯',name:'호법',desc:'문파의 고유 절기를 사용하는 중간 고수'},boss:{icon:'👑',name:'장문인',desc:'복합 절기와 강력한 내공을 사용하는 문파 수장'}};
+const MAP_GUIDES={swarm:'⚔️ 외문 무사 · 🥷 경공 자객 · 🛡️ 철포삼 고수',ranged:'🎯 암기수 · 🛡️ 철포삼 고수 · 🥷 경공 자객',brute:'💥 패도 무사 · 🛡️ 철포삼 고수 · 🥷 경공 자객',arcane:'🎯 기문 암기수 · 💥 패도 무사 · 🥷 변칙 경공'};
 const stars=Array.from({length:220},()=>({x:Math.random()*WORLD_W,y:Math.random()*WORLD_H,r:Math.random()*1.4+.25,a:Math.random()*.18+.03}));const ruins=Array.from({length:40},()=>({x:rand(140,WORLD_W-140),y:rand(140,WORLD_H-140),r:rand(24,58),rot:rand(0,Math.PI)}));
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}function rand(a,b){return a+Math.random()*(b-a)}function pick(a){return a[Math.floor(Math.random()*a.length)]}function round(n,d=0){const p=10**d;return Math.round(n*p)/p}function fmt(sec){sec=Math.floor(sec);return `${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`}function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
 function dist2(x1,y1,x2,y2){const dx=x1-x2,dy=y1-y2;return dx*dx+dy*dy}
@@ -291,17 +291,17 @@ function drawMinimap(){if(miniMap.classList.contains('hidden')||!player)return;c
 // Fusion requires two component skills PLUS one designated rare key skill.
 Object.assign(skillDefs,{
  poison:{name:'독무공',icon:'☠️',desc:'적 무리에 독성 안개를 폭발시켜 범위 피해를 줍니다.',baseCooldown:6.1,price:9999,color:'#86e56f'},
- orbit:{name:'호신강기',icon:'◉',desc:'주변을 도는 강기 구체가 적을 관통합니다.',baseCooldown:5.8,price:9999,color:'#72c8ff'},
- laser:{name:'일양지',icon:'指',desc:'응축한 지력을 직선으로 쏘아 적을 관통합니다.',baseCooldown:6.7,price:9999,color:'#ffe58a'},
- shadow:{name:'흑월비도',icon:'月',desc:'그림자 비도를 연속 투척해 적을 관통합니다.',baseCooldown:6.0,price:9999,color:'#b99aff'},
+ orbit:{name:'호신강기',icon:'🌀',desc:'주변을 도는 강기 구체가 적을 관통합니다.',baseCooldown:5.8,price:9999,color:'#72c8ff'},
+ laser:{name:'일양지',icon:'☝️',desc:'응축한 지력을 직선으로 쏘아 적을 관통합니다.',baseCooldown:6.7,price:9999,color:'#ffe58a'},
+ shadow:{name:'흑월비도',icon:'🌙',desc:'그림자 비도를 연속 투척해 적을 관통합니다.',baseCooldown:6.0,price:9999,color:'#b99aff'},
  wind:{name:'질풍검',icon:'🌪️',desc:'전방 넓은 부채꼴로 빠른 바람 칼날을 발사합니다.',baseCooldown:5.1,price:9999,color:'#8ff0df'},
  quake:{name:'진각',icon:'🪨',desc:'지면을 울려 주변 적에게 피해를 주고 잠시 둔화합니다.',baseCooldown:7.4,price:9999,color:'#d7a96f'},
- dragonHeart:{name:'용맥심법',icon:'龍',desc:'핵심 심법. 주기적으로 화염 내공을 전방으로 방출합니다.',baseCooldown:8.2,price:9999,color:'#ff785d',keySkill:true},
- stormCore:{name:'뇌령주',icon:'雷',desc:'핵심 기물. 주기적으로 가까운 적을 벽력으로 타격합니다.',baseCooldown:7.6,price:9999,color:'#70d9ff',keySkill:true},
- starSigil:{name:'천성인',icon:'星',desc:'핵심 기물. 가까운 적에게 천성 검기를 떨어뜨립니다.',baseCooldown:8.5,price:9999,color:'#ffd878',keySkill:true},
- worldSeed:{name:'청목진기',icon:'木',desc:'핵심 심법. 소량 회복과 주변 가시 강기를 발생시킵니다.',baseCooldown:9.6,price:9999,color:'#79e39b',keySkill:true},
- moonSeal:{name:'월영패',icon:'月',desc:'핵심 기물. 사방에 음영의 비도를 방출합니다.',baseCooldown:8.0,price:9999,color:'#a985e8',keySkill:true},
- primalCore:{name:'혼원진기',icon:'元',desc:'핵심 심법. 주변에 혼원 충격파를 일으킵니다.',baseCooldown:8.8,price:9999,color:'#e2ad70',keySkill:true}
+ dragonHeart:{name:'용맥심법',icon:'🐉',desc:'핵심 심법. 주기적으로 화염 내공을 전방으로 방출합니다.',baseCooldown:8.2,price:9999,color:'#ff785d',keySkill:true},
+ stormCore:{name:'뇌령주',icon:'⚡',desc:'핵심 기물. 주기적으로 가까운 적을 벽력으로 타격합니다.',baseCooldown:7.6,price:9999,color:'#70d9ff',keySkill:true},
+ starSigil:{name:'천성인',icon:'🌟',desc:'핵심 기물. 가까운 적에게 천성 검기를 떨어뜨립니다.',baseCooldown:8.5,price:9999,color:'#ffd878',keySkill:true},
+ worldSeed:{name:'청목진기',icon:'🌿',desc:'핵심 심법. 소량 회복과 주변 가시 강기를 발생시킵니다.',baseCooldown:9.6,price:9999,color:'#79e39b',keySkill:true},
+ moonSeal:{name:'월영패',icon:'🌙',desc:'핵심 기물. 사방에 음영의 비도를 방출합니다.',baseCooldown:8.0,price:9999,color:'#a985e8',keySkill:true},
+ primalCore:{name:'혼원진기',icon:'☯️',desc:'핵심 심법. 주변에 혼원 충격파를 일으킵니다.',baseCooldown:8.8,price:9999,color:'#e2ad70',keySkill:true}
 });
 
 baseSkillIds.splice(0,baseSkillIds.length,
@@ -1266,3 +1266,27 @@ const LEGACY_WEAPON_ENDINGS={sword:/((장검|청강검))$/,dagger:/((단검|비�
 if(!profile.wuxiaUnifiedV442){for(const item of profile.inventory||[]){if(!item?.weaponType||!weaponDefs[item.weaponType])continue;const d=weaponDefs[item.weaponType],re=LEGACY_WEAPON_ENDINGS[item.weaponType];item.icon=d.icon;if(re&&re.test(item.name||''))item.name=(item.name||'').replace(re,d.name)}profile.shopStock=[];profile.shopRefreshes=0;profile.wuxiaUnifiedV442=true;saveProfile()}
 try{renderHome()}catch(e){}
 /* ===== END CURRENT WUXIA MERCHANT ===== */
+
+
+/* ===== v4.5.1 PICTORIAL ITEM ICON MIGRATION ===== */
+function v451PictureIcon(item){
+ if(!item)return '🎒';
+ if(item.weaponType&&weaponDefs[item.weaponType])return weaponDefs[item.weaponType].icon;
+ const n=String(item.name||'');
+ if(item.slot==='head')return /야행/.test(n)?'🥷':/도인/.test(n)?'👒':'🪖';
+ if(item.slot==='chest')return /장포/.test(n)?'🧥':/중갑|호신/.test(n)?'🛡️':'🥋';
+ if(item.slot==='gloves')return /철사장/.test(n)?'🥊':'🧤';
+ if(item.slot==='legs')return '👖';
+ if(item.slot==='boots')return '🥾';
+ if(item.slot==='accessory'){
+   if(/탐물/.test(n))return '🧭';if(/전표/.test(n))return '🪙';if(/회춘/.test(n))return '💚';if(/질풍/.test(n))return '💨';if(/호신/.test(n))return '🪬';if(/벽력/.test(n))return '⚡';return '📿';
+ }
+ return item.icon||'🎒';
+}
+if(!profile.pictureItemIconsV451){
+ for(const item of profile.inventory||[])item.icon=v451PictureIcon(item);
+ for(const offer of profile.shopStock||[])if(offer?.item)offer.item.icon=v451PictureIcon(offer.item);
+ profile.pictureItemIconsV451=true;saveProfile();
+}
+try{renderHome()}catch(e){}
+/* ===== END v4.5.1 PICTORIAL ITEM ICON MIGRATION ===== */

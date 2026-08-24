@@ -15,6 +15,7 @@
   const baseFinish=finishRun;finishRun=function(cleared=false){const r=baseFinish(cleared);cleared?A.sfx.success():A.sfx.fail();A.playMusic('home',true);return r};
   const baseBoss=spawnBoss;spawnBoss=function(){const r=baseBoss();A.sfx.boss();A.playMusic('boss',true);return r};const baseMidBoss=spawnMidBoss;spawnMidBoss=function(){const r=baseMidBoss();A.sfx.boss();return r};
   const baseShoot=shoot;shoot=function(){const wt=player?.weaponType||'sword',r=baseShoot(),key={sword:'sword',dagger:'dagger',bow:'bow',staff:'fan',hammer:'hammer',spear:'spear',axe:'ring',grimoire:'talisman'}[wt];if(key)A.sfx[key]();return r};
+  const baseCastSkill=castSkill;castSkill=function(id){A.skill(id);return baseCastSkill(id)};
   const baseDamageEnemy=damageEnemy;damageEnemy=function(e,b){const hp=e?.hp,r=baseDamageEnemy(e,b);if(hp!=null&&e&&e.hp<hp)A.sfx.hit();return r};const baseDirect=dealDirectDamage;dealDirectDamage=function(e,dmg,crit,color){const hp=e?.hp,r=baseDirect(e,dmg,crit,color);if(hp!=null&&e&&e.hp<hp)(crit?A.sfx.heavyHit():A.sfx.hit());return r};
   if(typeof damageChest==='function'){const f=damageChest;damageChest=function(c,amount,color){const before=c?.hp,wasBroken=!!c?.broken,r=f(c,amount,color);if(!wasBroken&&c?.broken)A.sfx.chestBreak();else if(before!=null&&c?.hp<before)A.sfx.chestHit();return r}};
   if(typeof acquireRunItem==='function'){const f=acquireRunItem;acquireRunItem=function(item){const r=f(item);if(item?.rarity&&['epic','legendary','mythic'].includes(item.rarity))A.sfx.rare();else A.sfx.pickup();return r}};

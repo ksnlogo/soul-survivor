@@ -1268,7 +1268,7 @@ try{renderHome()}catch(e){}
 /* ===== END CURRENT WUXIA MERCHANT ===== */
 
 
-/* ===== v4.5.2 PICTORIAL ITEM ICON MIGRATION ===== */
+/* ===== v4.5.3 PICTORIAL ITEM ICON MIGRATION ===== */
 function v451PictureIcon(item){
  if(!item)return '🎒';
  if(item.weaponType&&weaponDefs[item.weaponType])return weaponDefs[item.weaponType].icon;
@@ -1289,4 +1289,4 @@ if(!profile.pictureItemIconsV451){
  profile.pictureItemIconsV451=true;saveProfile();
 }
 try{renderHome()}catch(e){}
-/* ===== END v4.5.2 PICTORIAL ITEM ICON MIGRATION ===== */
+/* ===== END v4.5.3 PICTORIAL ITEM ICON MIGRATION ===== */

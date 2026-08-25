@@ -33,11 +33,13 @@
       }
     }
     // Thin travelling mist.
-    const g=ctx.createLinearGradient(0,H*.4,W,H*.72);
-    g.addColorStop(0,'rgba(205,219,199,0)');
-    g.addColorStop(.48,'rgba(205,219,199,.045)');
-    g.addColorStop(1,'rgba(205,219,199,0)');
-    ctx.fillStyle=g;ctx.fillRect(0,H*.32,W,H*.42);
+    if(!isIos){
+      const g=ctx.createLinearGradient(0,H*.4,W,H*.72);
+      g.addColorStop(0,'rgba(205,219,199,0)');
+      g.addColorStop(.48,'rgba(205,219,199,.045)');
+      g.addColorStop(1,'rgba(205,219,199,0)');
+      ctx.fillStyle=g;ctx.fillRect(0,H*.32,W,H*.42);
+    }
     ctx.restore();
   };
 

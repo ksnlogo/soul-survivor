@@ -1,4 +1,4 @@
-# 무림 생존록 v4.5.6 — Art Vertical Slice
+# 무림 생존록 v4.5.7 — Art Vertical Slice
 
 v4.4.2 안정판을 기준으로 **게임 구조를 유지하면서 아트/사운드 레이어를 실제 개발 구조로 분리한 첫 Vertical Slice**입니다.
 
@@ -138,3 +138,15 @@ icons/
 - HUD 12.5fps, 미니맵 약 5.5fps로 갱신 제한
 - 투사체/적 투사체/파티클/공격 이펙트 개수 상한 적용
 - BGM, 무기 및 스킬 효과음과 전투 타격감 폴리싱은 유지
+
+
+## v4.5.7 Smooth Combat
+- iPhone 30fps 강제 제한 제거, requestAnimationFrame 기반 60fps 지향
+- 모바일 Canvas DPR 1.25 -> 1.0으로 GPU 픽셀 부하 감소
+- iPhone에서 매 프레임 생성하던 월드 광원/비네트/기본 안개 gradient 비활성화
+- 청죽림 수묵 배경의 동적 안개 gradient만 모바일에서 생략
+- 일반 투사체 및 공격 이펙트 shadowBlur 모바일 축소
+- BGM은 HTMLAudio 유지, 반복 전투 SFX는 Web Audio 디코드 버퍼 재생
+- 일반 피격마다 오디오를 재생하던 경로 제거
+- 검/창 휘두름 자체의 카메라 흔들림 제거, 실제 강타/회심에만 약한 흔들림 적용
+- 한 프레임 타격 스파크 생성량 제한으로 GC 피크 감소

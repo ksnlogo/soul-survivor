@@ -1,0 +1,10 @@
+name: Write Smoke Test
+on:
+  push:
+    paths:
+      - '.github/workflows/write-smoke-test.yml'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "workflow-ok"

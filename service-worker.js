@@ -1,4 +1,4 @@
-const CACHE_NAME = 'murim-survival-v4-5-4-pwa-1';
+const CACHE_NAME = 'murim-survival-v4-5-6-pwa-1';
 const APP_SHELL = [
   './',
   './index.html',

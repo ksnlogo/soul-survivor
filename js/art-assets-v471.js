@@ -33,9 +33,10 @@
     const id=mapId||stageId(),img=images[id];
     if(!ready[id]||!img||!img.complete)return null;
     const cached=groundPatterns.get(id);if(cached&&cached.context===target)return cached.pattern;
-    const c=atlasCell(img,3,2,0),size=Math.round(c.sw),tile=document.createElement('canvas');
+    // Upscale once into a broad mirrored tile: phone viewports no longer expose a repeating cell grid.
+    const c=atlasCell(img,3,2,0),size=Math.round(c.sw*3),tile=document.createElement('canvas');
     tile.width=size*2;tile.height=size*2;
-    const g=tile.getContext('2d',{alpha:false});
+    const g=tile.getContext('2d',{alpha:false});g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';
     for(let y=0;y<2;y++)for(let x=0;x<2;x++){
       g.save();g.translate(x*size,y*size);g.translate(x?size:0,y?size:0);g.scale(x?-1:1,y?-1:1);
       g.drawImage(img,c.sx,c.sy,c.sw,c.sh,0,0,size,size);g.restore();

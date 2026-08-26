@@ -28,7 +28,7 @@ html,body{background:#0d0e0b;font-family:system-ui,-apple-system,"Noto Sans KR",
 #stick{background:rgba(92,133,103,.34);border-color:rgba(137,180,145,.62);box-shadow:none}
 .meter{background:rgba(0,0,0,.34);border-color:rgba(210,188,137,.12)}#hp{background:linear-gradient(90deg,#8e3f38,#c46655)}.xp{background:linear-gradient(90deg,#668f76,#a18c55)}
 .characterCard{background:linear-gradient(150deg,#181b15,#11130f)}.avatar{background:#1b261e;border-color:rgba(132,177,142,.48);box-shadow:none}
-.itemCard,.equipSlot,.homeSlot{border-radius:9px}.itemCard{min-height:104px}.itemCard:before,.equipSlot:before,.homeSlot:before{content:"";position:absolute;inset:3px;border:1px solid rgba(210,188,137,.035);border-radius:6px;pointer-events:none}
+.itemCard,.equipSlot,.homeSlot{position:relative;border-radius:9px}.itemCard{min-height:104px}.itemCard:before,.equipSlot:before,.homeSlot:before{content:"";position:absolute;inset:3px;border:1px solid rgba(210,188,137,.035);border-radius:6px;pointer-events:none}
 .itemCard .rarity{letter-spacing:.09em}.itemCard .name{font-family:"Noto Serif KR","Batang",serif;font-size:12px}
 .itemDetail .itemIcon{border-radius:50%;background:#191b14;border-color:rgba(196,170,106,.28);box-shadow:inset 0 0 0 4px rgba(197,174,117,.025)}
 .upgrade{background:linear-gradient(135deg,#22251d,#181a15);border-color:rgba(189,164,107,.24);border-radius:11px}.upgrade .uicon{background:#171a14;border:1px solid rgba(190,166,108,.14);border-radius:50%}

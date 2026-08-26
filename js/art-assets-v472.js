@@ -23,8 +23,8 @@
     img.onload=()=>{ready[key]=true;groundPatterns.delete(key)};
     img.onerror=()=>{ready[key]=false};img.src=sources[key];
   }
-  ['characters','enemies','groundForest','envForest'].forEach(load);
-  const loadRemaining=()=>['groundFrost','groundEmber','groundCrypt','envFrost','envEmber','envCrypt'].forEach(load);
+  ['characters','enemies','groundForest','groundFrost','groundEmber','groundCrypt','envForest'].forEach(load);
+  const loadRemaining=()=>['envFrost','envEmber','envCrypt'].forEach(load);
   if('requestIdleCallback'in window)requestIdleCallback(loadRemaining,{timeout:1000});else setTimeout(loadRemaining,160);
 
   function stageId(){const id=currentMap&&currentMap.id;return ['forest','frost','ember','crypt'].includes(id)?id:'forest'}
@@ -40,6 +40,7 @@
 
   function getGroundPattern(target,mapId){
     const id=mapId||stageId(),key=groundKey(id),img=images[key];
+    if(!img){load(key);return null}
     if(!ready[key]||!img||!img.complete)return null;
     const cached=groundPatterns.get(key);if(cached&&cached.context===target)return cached.pattern;
     const size=img.naturalWidth,tile=document.createElement('canvas');tile.width=size*2;tile.height=size*2;

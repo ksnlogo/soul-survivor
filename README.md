@@ -1,4 +1,4 @@
-# 무림 생존록 v4.5.7 — Art Vertical Slice
+# 무림 생존록 v4.6.1 — Ink Wash Performance Pass
 
 v4.4.2 안정판을 기준으로 **게임 구조를 유지하면서 아트/사운드 레이어를 실제 개발 구조로 분리한 첫 Vertical Slice**입니다.
 
@@ -18,7 +18,7 @@ index.html
 css/game.css
 js/audio.js
 js/game.js
-js/art.js
+js/graphics-v461.js
 js/integration.js
 assets/art/
 assets/audio/
@@ -150,3 +150,14 @@ icons/
 - 일반 피격마다 오디오를 재생하던 경로 제거
 - 검/창 휘두름 자체의 카메라 흔들림 제거, 실제 강타/회심에만 약한 흔들림 적용
 - 한 프레임 타격 스파크 생성량 제한으로 GC 피크 감소
+
+## v4.6.1 Ink Wash Performance Pass
+- v4.6.0 수묵 배경이 불투명 지면 뒤에서 그려져 보이지 않던 렌더 순서 오류 수정
+- `game.js → art.js → graphics-v460.js`로 중복 호출되던 배경·캐릭터 렌더 체인을 단일 `graphics-v461.js`로 통합
+- 매 프레임 생성하던 수묵 산·운무·추가 배경 레이어를 제거하고, 스테이지별 640px 캐시 타일을 최초 1회만 생성
+- 청죽림·설원·협곡·고묘의 지면을 먹 번짐, 마른 붓결, 한지 섬유가 보이는 색상으로 재설계
+- 플레이어 크기와 도복·허리띠·옥 장식·무기 실루엣을 확대해 iPhone 화면 가독성 향상
+- 적 역할별 체형·무기·방어구를 직접 구분하고 일반 적의 불필요한 문자 표식 제거
+- 검 반월 검기, 창 관통선, 철추 균열과 화염·번개·한빙·유성 계열 효과를 단일 패스로 재작성
+- 전투 중 `shadowBlur`, 동적 그라디언트, 중복 장식 오버드로를 사용하지 않도록 제한
+- PWA 캐시를 `murim-survival-v4-6-1-pwa-1`로 갱신

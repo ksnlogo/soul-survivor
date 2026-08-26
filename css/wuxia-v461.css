@@ -1,0 +1,47 @@
+/* v4.6.1 · ink-wash wuxia UI. Static layers only; no blur filters. */
+:root{
+  --bg:#0c0f0b;--panel:#24251c;--panel2:#191b15;--paper:#d8cfb4;
+  --line:rgba(213,191,133,.30);--text:#f0ead9;--muted:#b2aa94;
+  --jade:#8fb497;--jade-dark:#45604d;--seal:#ad5143;--gold:#c9a65c;
+}
+html,body{background:#0c0f0b;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif}
+.title,.sectionTitle h2,.shopTop h2,.itemDetail h3{font-family:"Noto Serif KR","Batang",serif;letter-spacing:-.025em}
+.title{font-size:32px;color:#eee7d5;text-shadow:0 2px 0 rgba(0,0,0,.32)}
+.title em{color:#a7c3a8}.eyebrow{color:#c4a766;letter-spacing:.19em}
+.overlay{background:rgba(7,10,7,.93);backdrop-filter:none;-webkit-backdrop-filter:none}
+.panel{position:relative;overflow:hidden;border:1px solid rgba(205,181,119,.42);border-radius:14px;background:
+  linear-gradient(112deg,rgba(255,246,214,.035) 0 1px,transparent 1px 13px),
+  linear-gradient(180deg,#29281e 0%,#171913 100%);box-shadow:0 18px 48px rgba(0,0,0,.52),inset 0 0 0 1px rgba(255,244,210,.035)}
+.panel:after{content:"";position:absolute;inset:6px;pointer-events:none;border:1px solid rgba(213,189,126,.10);border-radius:9px}
+.heroPanel:before{content:"山";position:absolute;right:17px;top:10px;width:auto;height:auto;background:none;color:rgba(185,201,170,.075);font:700 76px/1 "Noto Serif KR","Batang",serif;filter:none;box-shadow:none}
+.heroPanel:after{content:"武";position:absolute;right:25px;top:82px;width:34px;height:34px;display:grid;place-items:center;inset:auto;border:2px solid rgba(173,81,67,.18);border-radius:4px;color:rgba(189,91,73,.24);font:700 19px/1 serif;transform:rotate(-4deg);pointer-events:none}
+.subtitle{color:#b7af9b}.profileChip,.stageHome,.characterCard,.stat,.statsBox .statLine,.rewardItem,.homeSlot,.itemCard,.equipSlot{background:rgba(18,22,16,.76);border-color:rgba(201,181,130,.22)}
+.profileChip small,.homeSlot small,.equipSlot small,.stat span,.inventoryHeader span{color:#9b9786}
+.stageHome{background:linear-gradient(100deg,rgba(79,111,86,.38),rgba(113,86,49,.20));border-color:rgba(147,180,149,.33)}
+.stageHome b{color:#e2eadc}.sectStory{border-color:rgba(194,167,103,.28)!important;background:rgba(35,34,24,.78)!important}
+.sectStoryTop b:before{content:"印";display:inline-grid;place-items:center;width:19px;height:19px;margin-right:6px;border:1px solid rgba(183,76,61,.58);border-radius:3px;color:#c76554;font:700 11px/1 serif}
+.btn{border:1px solid rgba(163,196,167,.34);border-radius:8px;background:linear-gradient(180deg,#66856c,#425d4b);color:#f3edde;box-shadow:0 6px 15px rgba(0,0,0,.25),inset 0 1px rgba(255,255,255,.09)}
+.btn.secondary{background:linear-gradient(180deg,#3a3b31,#272921);border-color:rgba(199,179,128,.27);color:#e3dccb}
+.btn.ghost{background:rgba(13,16,11,.36);border-color:rgba(195,169,105,.28);color:#d0c8b5}
+.btn.gold{background:linear-gradient(180deg,#d0b269,#94763b);border-color:#ddc27c;color:#21190c}
+.pill,#weaponBadge,#zoneBadge,#enemyGuide{background:rgba(17,22,16,.90);border-color:rgba(204,181,122,.28);backdrop-filter:none;-webkit-backdrop-filter:none;color:#e0d8c5}
+#zoneBadge{color:#c3d3bd;border-radius:6px}#enemyGuide{color:#aaa690}
+#miniMap{border-radius:6px;border-color:rgba(205,177,111,.42);background:rgba(17,23,17,.92);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 5px 16px rgba(0,0,0,.38)}
+#joystick{border-color:rgba(205,184,130,.30);background:rgba(22,27,20,.46);box-shadow:inset 0 0 0 1px rgba(222,204,154,.05)}
+#stick{background:rgba(105,143,111,.38);border-color:rgba(153,195,157,.70);box-shadow:none}
+.meter{background:rgba(0,0,0,.38);border-color:rgba(218,194,139,.16)}#hp{background:linear-gradient(90deg,#884239,#c56855)}.xp{background:linear-gradient(90deg,#648a70,#a38b51)}
+.characterCard{background:linear-gradient(150deg,#20261d,#121610)}.avatar{background:#202d22;border-color:rgba(144,188,149,.54);box-shadow:none}
+.itemCard,.equipSlot,.homeSlot{position:relative;border-radius:8px}.itemCard{min-height:104px}.itemCard:before,.equipSlot:before,.homeSlot:before{content:"";position:absolute;inset:3px;border:1px solid rgba(220,199,145,.05);border-radius:5px;pointer-events:none}
+.itemCard .rarity{letter-spacing:.08em}.itemCard .name{font-family:"Noto Serif KR","Batang",serif;font-size:12px}
+.itemDetail .itemIcon{border-radius:50%;background:#1d2119;border-color:rgba(207,179,109,.34);box-shadow:inset 0 0 0 4px rgba(205,180,117,.035)}
+.upgrade{background:linear-gradient(135deg,#292c22,#191c16);border-color:rgba(204,178,112,.31);border-radius:9px}.upgrade .uicon{background:#181d16;border:1px solid rgba(203,178,115,.20);border-radius:50%}
+.filterBtn,.shopTab{background:#20231c!important;border-color:rgba(200,176,112,.26)!important;color:#b5b09e!important}.filterBtn.active,.shopTab.active{background:#486451!important;color:#f0ecdf!important;border-color:#77977d!important}
+#toast{background:#242117;border-color:rgba(211,181,108,.40);border-radius:7px;box-shadow:0 10px 28px rgba(0,0,0,.42);font-family:"Noto Serif KR","Batang",serif}
+.common{color:#c0bcaf}.rare{color:#84b5ba}.epic{color:#b48cba}.legendary{color:#d7ae60}.mythic{color:#ce736d;text-shadow:none}
+.artSliceTag{display:none!important}
+@media (max-width:820px){
+  .panel{box-shadow:0 11px 30px rgba(0,0,0,.48)}
+  .heroPanel:before{font-size:58px}.heroPanel:after{top:66px}
+  .pill,#weaponBadge,#zoneBadge,#enemyGuide,#miniMap{backdrop-filter:none;-webkit-backdrop-filter:none}
+  .btn{box-shadow:0 4px 10px rgba(0,0,0,.20)}
+}

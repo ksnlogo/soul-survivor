@@ -22,8 +22,8 @@
 
   function buildInkTile(){
     const id=(currentMap&&currentMap.id)||'forest';
-    if(window.MurimArtV471&&typeof window.MurimArtV471.getGroundPattern==='function'){
-      const painted=window.MurimArtV471.getGroundPattern(ctx,id);
+    if(window.MurimArtV472&&typeof window.MurimArtV472.getGroundPattern==='function'){
+      const painted=window.MurimArtV472.getGroundPattern(ctx,id);
       if(painted)return painted;
     }
     if(inkPattern&&inkTheme===id)return inkPattern;

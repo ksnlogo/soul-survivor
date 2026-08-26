@@ -1,4 +1,4 @@
-const CACHE_NAME = 'murim-survival-v4-7-1-pwa-3';
+const CACHE_NAME = 'murim-survival-v4-7-2-pwa-1';
 const APP_SHELL = [
   './',
   './index.html',
@@ -8,10 +8,15 @@ const APP_SHELL = [
   './js/audio.js',
   './js/game.js',
   './js/graphics-v461.js',
-  './js/art-assets-v471.js',
+  './js/art-assets-v472.js',
   './js/integration.js',
   './js/combat-polish.js',
   './assets/art/v470/character-atlas-v470.webp',
+  './assets/art/v472/enemy-atlas-v472.webp',
+  './assets/art/v472/forest-ground-v472.webp',
+  './assets/art/v472/frost-ground-v472.webp',
+  './assets/art/v472/ember-ground-v472.webp',
+  './assets/art/v472/crypt-ground-v472.webp',
   './assets/art/v471/forest-environment-v471.webp',
   './assets/art/v471/frost-environment-v471.webp',
   './assets/art/v471/ember-environment-v471.webp',

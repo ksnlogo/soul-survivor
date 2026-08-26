@@ -1,4 +1,4 @@
-# 무림 생존록 v4.7.1 — Cohesive Stage Environments
+# 무림 생존록 v4.7.2 — High Resolution Grounds & Complete Enemy Art
 
 v4.4.2 안정판을 기준으로 **게임 구조를 유지하면서 아트/사운드 레이어를 실제 개발 구조로 분리한 첫 Vertical Slice**입니다.
 
@@ -19,7 +19,7 @@ css/game.css
 js/audio.js
 js/game.js
 js/graphics-v461.js
-js/art-assets-v471.js
+js/art-assets-v472.js
 js/integration.js
 assets/art/
 assets/audio/
@@ -180,3 +180,11 @@ icons/
 - 넓은 단색 도로를 지면 질감이 비치는 저명도 마른 붓길로 변경하고 중앙 진법의 불투명도를 축소
 - 4개 환경 아틀라스를 768×512 알파 WebP, 합계 약 306KB로 압축하고 비활성 스테이지는 idle 시점에 디코드
 - PWA 캐시를 `murim-survival-v4-7-1-pwa-3`로 갱신
+
+## v4.7.2 High Resolution Grounds & Complete Enemy Art
+- 256px 환경 아틀라스 지면 확대를 제거하고 4개 스테이지별 1024×1024 전용 지면 텍스처 적용
+- 원본 픽셀을 유지한 2048px 미러 캐시로 이음새를 숨기고 반복 대칭 간격을 4배 확대
+- 기존 아틀라스에 없던 돌진형·정예·중간 보스·최종 보스를 1024×1024 투명 아틀라스로 추가
+- 모든 전투 적 유형에 이미지 그래픽을 적용하고 보스 체력바·피격 표시·충돌 판정은 기존 로직 유지
+- 비활성 스테이지 지면과 오브젝트는 idle 시점에 불러와 시작 프레임 부하를 분산
+- PWA 캐시를 `murim-survival-v4-7-2-pwa-1`로 갱신

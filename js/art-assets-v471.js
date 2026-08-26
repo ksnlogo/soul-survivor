@@ -41,8 +41,17 @@
       g.save();g.translate(x*size,y*size);g.translate(x?size:0,y?size:0);g.scale(x?-1:1,y?-1:1);
       g.drawImage(img,c.sx,c.sy,c.sw,c.sh,0,0,size,size);g.restore();
     }
-    const tint={forest:'rgba(15,24,17,.08)',frost:'rgba(35,48,55,.07)',ember:'rgba(48,24,14,.08)',crypt:'rgba(12,12,10,.11)'}[id];
+    const tint={forest:'rgba(15,24,17,.16)',frost:'rgba(35,48,55,.13)',ember:'rgba(48,24,14,.15)',crypt:'rgba(12,12,10,.18)'}[id];
     g.fillStyle=tint;g.fillRect(0,0,tile.width,tile.height);
+    // Broad asymmetric ink washes break the mirrored source rhythm without adding frame-time work.
+    let seed={forest:4711,frost:4712,ember:4713,crypt:4714}[id]||4711;
+    const rnd=()=>((seed=(seed*1664525+1013904223)>>>0)/4294967296);
+    for(let i=0;i<14;i++){
+      const radius=110+rnd()*170,x=radius+rnd()*(tile.width-radius*2),y=radius+rnd()*(tile.height-radius*2);
+      const wash=g.createRadialGradient(x,y,radius*.08,x,y,radius);
+      wash.addColorStop(0,i%3?'rgba(12,15,12,.055)':'rgba(225,218,190,.035)');wash.addColorStop(1,'rgba(0,0,0,0)');
+      g.fillStyle=wash;g.beginPath();g.ellipse(x,y,radius,radius*(.42+rnd()*.34),rnd()*Math.PI,0,Math.PI*2);g.fill();
+    }
     const pattern=target.createPattern(tile,'repeat');groundPatterns.set(id,{context:target,pattern});return pattern;
   }
 

@@ -91,10 +91,10 @@
 
     // Broken dry-brush roads let the painted ground show through and bind props to the terrain.
     for(const pts of mapPaths){
-      strokePath(pts,60,'rgba(18,19,15,.13)');
-      ctx.globalAlpha=.38;strokePath(pts,43,L.road);
-      ctx.globalAlpha=.18;ctx.setLineDash([42,22,13,29]);strokePath(pts,15,L.roadInner);
-      ctx.globalAlpha=.15;ctx.setLineDash([23,41]);strokePath(pts,1.1,L.paper);ctx.setLineDash([]);ctx.globalAlpha=1;
+      strokePath(pts,48,'rgba(18,19,15,.08)');
+      ctx.globalAlpha=.24;strokePath(pts,32,L.road);
+      ctx.globalAlpha=.12;ctx.setLineDash([42,22,13,29]);strokePath(pts,13,L.roadInner);
+      ctx.globalAlpha=.12;ctx.setLineDash([23,41]);strokePath(pts,1,L.paper);ctx.setLineDash([]);ctx.globalAlpha=1;
     }
 
     const step=isIos?3:2;

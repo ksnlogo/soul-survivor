@@ -1,0 +1,43 @@
+/* v4.6.0 · hand-painted wuxia UI pass. No external image/font assets. */
+:root{
+  --bg:#0d0e0b;--panel:#1a1812;--panel2:#242017;--line:rgba(204,181,126,.22);
+  --text:#eee7d5;--muted:#aaa28e;--mint:#86b59a;--blue:#9eb7a4;--red:#b8584e;--gold:#c9a65c;
+}
+html,body{background:#0d0e0b;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif}
+.title,.sectionTitle h2,.shopTop h2,.itemDetail h3{font-family:"Noto Serif KR","Batang",serif;letter-spacing:-.02em}
+.title{font-size:31px;text-shadow:0 2px 0 rgba(0,0,0,.28)}
+.title em{color:#8eb89d}
+.eyebrow{color:#b79b62;letter-spacing:.2em}
+.overlay{background:rgba(8,9,7,.91);backdrop-filter:none;-webkit-backdrop-filter:none}
+.panel{position:relative;overflow:hidden;background:linear-gradient(180deg,#211e16 0%,#15140f 100%);border:1px solid rgba(191,162,101,.34);border-radius:18px;box-shadow:0 18px 52px rgba(0,0,0,.48),inset 0 0 0 1px rgba(255,244,210,.025)}
+.panel:after{content:"";position:absolute;inset:7px;pointer-events:none;border:1px solid rgba(203,177,116,.07);border-radius:12px}
+.heroPanel:before{width:210px;height:210px;top:-108px;right:-76px;background:transparent;border:1px solid rgba(179,146,74,.18);filter:none;box-shadow:0 0 0 22px rgba(179,146,74,.025),0 0 0 44px rgba(179,146,74,.018)}
+.heroPanel:after{content:"☯";position:absolute;right:18px;top:16px;font-family:serif;font-size:50px;color:rgba(194,168,106,.055);border:0;inset:auto;pointer-events:none}
+.subtitle{color:#aaa391}.profileChip,.stageHome,.characterCard,.stat,.statsBox .statLine,.rewardItem,.homeSlot,.itemCard,.equipSlot{background:#151710;border-color:rgba(191,167,109,.17)}
+.profileChip small,.homeSlot small,.equipSlot small,.stat span,.inventoryHeader span{color:#8e8c7b}
+.stageHome{background:linear-gradient(135deg,rgba(70,107,82,.22),rgba(116,87,43,.12));border-color:rgba(116,154,116,.25)}
+.stageHome b{color:#dde8d9}.sectStory{border-color:rgba(187,159,96,.2)!important;background:rgba(31,28,19,.72)!important}
+.btn{border:1px solid rgba(162,191,162,.26);border-radius:10px;background:linear-gradient(180deg,#587964,#3d5847);color:#f1ead9;box-shadow:0 7px 18px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.08)}
+.btn.secondary{background:linear-gradient(180deg,#34342c,#24251f);border-color:rgba(188,170,126,.2);color:#ded8c8}
+.btn.ghost{background:rgba(12,13,10,.25);border-color:rgba(181,157,104,.24);color:#c9c2b1}
+.btn.gold{background:linear-gradient(180deg,#c5a45e,#8e7138);border-color:#d0b36e;color:#1c170d}
+.pill,#weaponBadge,#zoneBadge,#enemyGuide{background:rgba(19,20,15,.88);border-color:rgba(193,167,108,.2);backdrop-filter:none;-webkit-backdrop-filter:none;color:#ddd6c4}
+#zoneBadge{color:#b7c9b5;border-radius:7px}#enemyGuide{color:#999987}
+#miniMap{border-radius:7px;border-color:rgba(191,164,104,.32);background:rgba(15,17,13,.9);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 5px 18px rgba(0,0,0,.35)}
+#joystick{border-color:rgba(188,169,120,.25);background:rgba(23,26,20,.42);box-shadow:inset 0 0 0 1px rgba(218,197,142,.04)}
+#stick{background:rgba(92,133,103,.34);border-color:rgba(137,180,145,.62);box-shadow:none}
+.meter{background:rgba(0,0,0,.34);border-color:rgba(210,188,137,.12)}#hp{background:linear-gradient(90deg,#8e3f38,#c46655)}.xp{background:linear-gradient(90deg,#668f76,#a18c55)}
+.characterCard{background:linear-gradient(150deg,#181b15,#11130f)}.avatar{background:#1b261e;border-color:rgba(132,177,142,.48);box-shadow:none}
+.itemCard,.equipSlot,.homeSlot{border-radius:9px}.itemCard{min-height:104px}.itemCard:before,.equipSlot:before,.homeSlot:before{content:"";position:absolute;inset:3px;border:1px solid rgba(210,188,137,.035);border-radius:6px;pointer-events:none}
+.itemCard .rarity{letter-spacing:.09em}.itemCard .name{font-family:"Noto Serif KR","Batang",serif;font-size:12px}
+.itemDetail .itemIcon{border-radius:50%;background:#191b14;border-color:rgba(196,170,106,.28);box-shadow:inset 0 0 0 4px rgba(197,174,117,.025)}
+.upgrade{background:linear-gradient(135deg,#22251d,#181a15);border-color:rgba(189,164,107,.24);border-radius:11px}.upgrade .uicon{background:#171a14;border:1px solid rgba(190,166,108,.14);border-radius:50%}
+.filterBtn,.shopTab{background:#1b1d17!important;border-color:rgba(188,166,111,.2)!important;color:#aaa797!important}.filterBtn.active,.shopTab.active{background:#405b49!important;color:#ece8da!important;border-color:#66846c!important}
+#toast{background:#1d1b14;border-color:rgba(202,176,111,.32);border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.38);font-family:"Noto Serif KR","Batang",serif}
+.common{color:#b8b5a7}.rare{color:#79aeb4}.epic{color:#aa84b0}.legendary{color:#d2a85d}.mythic{color:#c66b66;text-shadow:none}
+@media (max-width:820px){
+  .panel{box-shadow:0 12px 34px rgba(0,0,0,.45)}
+  .heroPanel:before{display:none}
+  .pill,#weaponBadge,#zoneBadge,#enemyGuide,#miniMap{backdrop-filter:none;-webkit-backdrop-filter:none}
+  .btn{box-shadow:0 4px 12px rgba(0,0,0,.18)}
+}

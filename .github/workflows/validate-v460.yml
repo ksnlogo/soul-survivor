@@ -3,6 +3,10 @@ on:
   push:
     paths:
       - '.github/workflows/validate-v460.yml'
+      - 'index.html'
+      - 'service-worker.js'
+      - 'css/wuxia-v460.css'
+      - 'js/graphics-v460.js'
 permissions:
   contents: read
 jobs:

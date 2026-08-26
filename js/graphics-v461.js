@@ -22,8 +22,8 @@
 
   function buildInkTile(){
     const id=(currentMap&&currentMap.id)||'forest';
-    if(id==='forest'&&window.MurimArtV470&&typeof window.MurimArtV470.getGroundPattern==='function'){
-      const painted=window.MurimArtV470.getGroundPattern(ctx);
+    if(window.MurimArtV471&&typeof window.MurimArtV471.getGroundPattern==='function'){
+      const painted=window.MurimArtV471.getGroundPattern(ctx,id);
       if(painted)return painted;
     }
     if(inkPattern&&inkTheme===id)return inkPattern;
@@ -89,11 +89,12 @@
   drawArenaDetails=function(){
     const L=palette();ctx.fillStyle=buildInkTile();ctx.fillRect(camera.x-2,camera.y-2,W+4,H+4);
 
-    // Two restrained dry-brush roads remain readable without dominating the painting.
+    // Broken dry-brush roads let the painted ground show through and bind props to the terrain.
     for(const pts of mapPaths){
-      strokePath(pts,72,'rgba(18,22,17,.20)');
-      strokePath(pts,57,L.road);strokePath(pts,39,L.roadInner);
-      ctx.globalAlpha=.18;ctx.setLineDash([24,38]);strokePath(pts,1.2,L.paper);ctx.setLineDash([]);ctx.globalAlpha=1;
+      strokePath(pts,60,'rgba(18,19,15,.13)');
+      ctx.globalAlpha=.38;strokePath(pts,43,L.road);
+      ctx.globalAlpha=.18;ctx.setLineDash([42,22,13,29]);strokePath(pts,15,L.roadInner);
+      ctx.globalAlpha=.15;ctx.setLineDash([23,41]);strokePath(pts,1.1,L.paper);ctx.setLineDash([]);ctx.globalAlpha=1;
     }
 
     const step=isIos?3:2;
@@ -103,7 +104,7 @@
     // The central formation is deliberately faint so characters remain the focus.
     const cx=WORLD_W/2,cy=WORLD_H/2;
     if(inView(cx,cy,180)){
-      ctx.save();ctx.strokeStyle=L.accent;ctx.globalAlpha=.16;ctx.lineWidth=2;
+      ctx.save();ctx.strokeStyle=L.accent;ctx.globalAlpha=.09;ctx.lineWidth=1.6;
       ctx.beginPath();ctx.arc(cx,cy,116,0,TAU);ctx.stroke();ctx.beginPath();ctx.arc(cx,cy,77,0,TAU);ctx.stroke();
       for(let i=0;i<8;i++){const a=i*Math.PI/4;ctx.beginPath();ctx.moveTo(cx+Math.cos(a)*77,cy+Math.sin(a)*77);ctx.lineTo(cx+Math.cos(a)*116,cy+Math.sin(a)*116);ctx.stroke();}
       ctx.restore();

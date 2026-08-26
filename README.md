@@ -1,4 +1,4 @@
-# 무림 생존록 v4.7.0 — Painted Art Vertical Slice
+# 무림 생존록 v4.7.1 — Cohesive Stage Environments
 
 v4.4.2 안정판을 기준으로 **게임 구조를 유지하면서 아트/사운드 레이어를 실제 개발 구조로 분리한 첫 Vertical Slice**입니다.
 
@@ -19,7 +19,7 @@ css/game.css
 js/audio.js
 js/game.js
 js/graphics-v461.js
-js/art-assets-v470.js
+js/art-assets-v471.js
 js/integration.js
 assets/art/
 assets/audio/
@@ -172,3 +172,11 @@ icons/
 - 이미지가 아직 준비되지 않았거나 청죽림 외 지역인 경우 v4.6.1 절차형 렌더러로 자동 대체
 - 충돌·AI·전투 계산과 무공 이펙트는 기존 Canvas 구조를 그대로 유지
 - PWA 캐시를 `murim-survival-v4-7-0-pwa-1`로 갱신
+
+## v4.7.1 Cohesive Stage Environments
+- 청죽림·설원·협곡·고묘 각각에 지면과 나무·암석·제단·산문·상자를 한 화풍으로 묶은 환경 아틀라스 적용
+- 기존 v4.7.0 캐릭터 아틀라스를 전 스테이지에서 유지하고 환경 오브젝트만 현재 지역 아틀라스로 교체
+- 지면 타일을 좌우·상하 반전 조합해 반복 경계를 숨기고 스테이지별 약한 색조만 캐시 단계에서 1회 합성
+- 넓은 단색 도로를 지면 질감이 비치는 저명도 마른 붓길로 변경하고 중앙 진법의 불투명도를 축소
+- 4개 환경 아틀라스를 768×512 알파 WebP, 합계 약 306KB로 압축하고 비활성 스테이지는 idle 시점에 디코드
+- PWA 캐시를 `murim-survival-v4-7-1-pwa-1`로 갱신

@@ -1,4 +1,4 @@
-# 무림 생존록 v4.6.1 — Ink Wash Performance Pass
+# 무림 생존록 v4.7.0 — Painted Art Vertical Slice
 
 v4.4.2 안정판을 기준으로 **게임 구조를 유지하면서 아트/사운드 레이어를 실제 개발 구조로 분리한 첫 Vertical Slice**입니다.
 
@@ -19,6 +19,7 @@ css/game.css
 js/audio.js
 js/game.js
 js/graphics-v461.js
+js/art-assets-v470.js
 js/integration.js
 assets/art/
 assets/audio/
@@ -161,3 +162,13 @@ icons/
 - 검 반월 검기, 창 관통선, 철추 균열과 화염·번개·한빙·유성 계열 효과를 단일 패스로 재작성
 - 전투 중 `shadowBlur`, 동적 그라디언트, 중복 장식 오버드로를 사용하지 않도록 제한
 - PWA 캐시를 `murim-survival-v4-6-1-pwa-1`로 갱신
+
+## v4.7.0 Painted Art Vertical Slice
+- 청죽림만 실제 수묵 채색 이미지 자산을 사용하는 비교 검증판
+- 청운문 플레이어, 일반 무사, 자객, 중갑병, 궁수 캐릭터 아틀라스 적용
+- 대나무 군락, 괴석, 사당, 산문, 보물상자, 석주 오브젝트 아틀라스 적용
+- 반복 가능한 수묵 지면 텍스처를 최초 1회 CanvasPattern으로 변환해 재사용
+- 원본 PNG 약 7.8MB를 WebP 3개, 합계 약 330KB로 압축
+- 이미지가 아직 준비되지 않았거나 청죽림 외 지역인 경우 v4.6.1 절차형 렌더러로 자동 대체
+- 충돌·AI·전투 계산과 무공 이펙트는 기존 Canvas 구조를 그대로 유지
+- PWA 캐시를 `murim-survival-v4-7-0-pwa-1`로 갱신

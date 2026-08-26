@@ -22,6 +22,10 @@
 
   function buildInkTile(){
     const id=(currentMap&&currentMap.id)||'forest';
+    if(id==='forest'&&window.MurimArtV470&&typeof window.MurimArtV470.getGroundPattern==='function'){
+      const painted=window.MurimArtV470.getGroundPattern(ctx);
+      if(painted)return painted;
+    }
     if(inkPattern&&inkTheme===id)return inkPattern;
     const L=palette(),rnd=seeded({forest:4611,frost:4612,ember:4613,crypt:4614}[id]||4611);
     inkTile=document.createElement('canvas');inkTile.width=640;inkTile.height=640;

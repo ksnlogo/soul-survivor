@@ -320,5 +320,19 @@
     ctx.restore();
   };
 
+  const oldHome=renderHome;
+  renderHome=function(){
+    const r=oldHome();
+    $('stageHomeDesc').textContent='7:00 · 유파 선택 · 무공 3칸 · 핵심 융합';
+    $('homeSkills').innerHTML=
+      '<div class="homeSkill"><span class="si">🧭</span><small>전투 유파</small><b>첫 상자에서 선택</b></div>'+
+      '<div class="homeSkill"><span class="si">⚔️</span><small>무공 한도</small><b>최대 3개 · 교체 가능</b></div>'+
+      '<div class="homeSkill"><span class="si">🔑</span><small>융합</small><b>선택 유파의 핵심만 획득</b></div>';
+    return r;
+  };
+  const skillGuide=document.querySelector('#skillScreen .subtitle');
+  if(skillGuide)skillGuide.textContent=
+    '원정마다 첫 보급 상자에서 무공 유파를 선택합니다. 무공은 최대 3개까지만 운용할 수 있으며, 보상에서 강화 또는 교체를 선택합니다. 선택 유파의 재료 무공 2개와 핵심 심법 1개를 모으면 해당 융합 무공이 완성됩니다. 다른 유파의 핵심 심법은 같은 원정에서 등장하지 않습니다.';
+
   window.MurimBuildVersion='4.8.1';
 })();

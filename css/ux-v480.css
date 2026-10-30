@@ -1,0 +1,18 @@
+/* v4.8.0 - static, lightweight wuxia overlays. No blur/filter or Canvas passes. */
+#v480PauseButton {
+  position:fixed;right:10px;top:calc(env(safe-area-inset-top) + 164px);
+  z-index:7;width:42px;height:42px;border-radius:10px;
+  background:#24271e;border:1px solid #ab9562;color:#eddfbd;
+  font-weight:900;font-size:19px;cursor:pointer;touch-action:manipulation;
+  box-shadow:0 4px 14px rgba(0,0,0,.28);
+}
+#v480PauseButton:active {background:#44513c}
+#v480PauseOverlay,#v480GuideOverlay {z-index:45;background:rgba(8,11,8,.91)}
+.v480Panel {max-width:420px;text-align:center;padding:22px}
+.v480Panel h2 {color:#e8d6a9;font-family:"Noto Serif KR","Batang",serif;margin:10px 0 14px}
+.v480Panel .subtitle {line-height:1.7}
+.v480SaveNote {font-size:12px;line-height:1.6;color:#a8c9a7;margin:10px 0 18px}
+.v480GuideCounter {font-weight:800;letter-spacing:.13em;color:#a8bfa0;font-size:12px;margin:14px 0}
+.v480GuideText {font-size:14px;color:#e4dfcf;line-height:1.85;min-height:112px;white-space:pre-line}
+.v480GuideButtons {display:grid;grid-template-columns:1fr 1.7fr;gap:10px;margin-top:14px}
+@media(max-height:600px){.v480GuideText{min-height:55px}.v480Panel{padding:15px}}

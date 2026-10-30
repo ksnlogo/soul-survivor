@@ -240,16 +240,17 @@
     showSkillLootModal('flame');
   };
 
-  // The first destroyed chest always triggers a doctrine choice, removing
-  // the previous long random wait to find the first useful martial art.
+  // First three destroyed crates guarantee a strategic martial-arts
+  // decision, even if their ordinary random skill drop roll misses.
+  // Natural skill drops still work, but never open a second dialog.
   const oldBreakChest=breakChest;
   breakChest=function(c){
     if(!c || c.broken)return;
-    const first=!!(player && !player.v481Path && !player.v481FirstChest);
     const result=oldBreakChest(c);
-    if(first && c.broken){
-      player.v481FirstChest=true;
-      if(!pendingSkillLoot && itemModal.classList.contains('hidden'))
+    if(c.broken && player){
+      player.v481ChestsBroken=(player.v481ChestsBroken||0)+1;
+      if(player.v481ChestsBroken<=3 && !pendingSkillLoot &&
+         itemModal.classList.contains('hidden'))
         acquireSkillFromChest(true);
     }
     return result;

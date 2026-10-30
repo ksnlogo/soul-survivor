@@ -1,0 +1,31 @@
+/* v4.8.2 — 3 school builds and four-tab pause journal */
+#v481BuildHud{display:none!important}
+#v482PathsHud{position:fixed;right:10px;bottom:calc(env(safe-area-inset-bottom) + 76px);z-index:6;pointer-events:none;width:169px;padding:8px;border:1px solid rgba(202,177,112,.65);border-radius:10px;background:rgba(21,24,19,.91);box-shadow:0 5px 12px #0005;color:#eee7d4}
+.v482HudHeading{display:flex;justify-content:space-between;font-size:10px;font-weight:800;margin-bottom:5px}.v482HudHeading b{color:#d6bb78}
+.v482HudRows{display:grid;gap:3px}.v482HudRow{display:flex;gap:4px;justify-content:space-between;font-size:10px;padding:4px 3px;background:#34362678;border-radius:4px}.v482HudRow b{color:#b1d4a7;white-space:nowrap}.v482Empty{color:#a6a399}
+#v480PauseOverlay .v480Panel{max-height:calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 22px);display:flex;flex-direction:column;overflow:hidden;width:min(98vw,570px);padding:15px}
+#v480PauseOverlay #v480PauseTitle{margin:5px 0}
+#v480PauseOverlay #v480PauseDetails{margin:3px 0 9px}
+#v480PauseOverlay .v480SaveNote{font-size:10px;margin:6px 0}
+#v480PauseOverlay .v480Panel>.btn{flex-shrink:0;padding:9px 12px}
+.v482Journal{min-height:0;display:flex;flex-direction:column;flex:1;margin:0 0 5px}
+.v482Tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-bottom:7px;flex-shrink:0}
+.v482Tab{border:1px solid #77745d;border-radius:6px;padding:10px 3px;color:#c7c2aa;font-size:11px;font-weight:700;white-space:nowrap;background:#292b22;cursor:pointer;touch-action:manipulation}
+.v482Tab.active{background:#506b54;color:#fff4d8;border-color:#a8bd87}
+.v482JournalBody{flex:1;min-height:120px;max-height:min(41dvh,440px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;text-align:left;border:1px solid #665e45;border-radius:8px;background:#171a16;padding:10px}
+.v482JournalBody h3{font-size:13px;color:#eddbaf;margin:8px 0 7px}.v482JournalBody h3 small{color:#a7a590;font-size:10px}
+.v482JournalHelp{color:#b8b19b;font-size:11px;line-height:1.65;margin:5px 0 12px}
+.v482StatTop{font-size:12px;color:#ede2ca;margin:4px 0 12px}.v482HpTrack{height:9px;border-radius:6px;background:#4a3932;margin-top:6px;overflow:hidden}.v482HpTrack i{display:block;background:#b96763;height:100%}
+.v482StatGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.v482Stat{background:#292b21;border:1px solid #4d4b36;border-radius:6px;padding:9px 7px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.v482Stat small{font-size:10px;color:#b8b7a3}.v482Stat b{font-size:12px;color:#f1e4c6;overflow:hidden;text-overflow:ellipsis}
+.v482ItemList{display:grid;gap:5px}.v482ItemRow{display:flex;gap:9px;align-items:center;background:#292b22;border:1px solid #414334;border-radius:7px;padding:7px;min-width:0}
+.v482ItemRow>div{flex:1;min-width:0}.v482ItemRow b{display:block;font-size:12px;margin:3px 0;overflow-wrap:anywhere}.v482ItemRow small{display:block;font-size:10px;line-height:1.5;color:#b0b09a}.v482ItemIcon{flex:0 0 30px;font-size:22px;text-align:center}
+.v482PathCard{padding:10px;margin-bottom:9px;border:1px solid #615b42;border-radius:9px;background:#27291f}.v482PathHead{display:flex;justify-content:space-between;gap:6px;align-items:center}.v482PathHead b{color:#ead7a5;font-size:13px}.v482PathHead small{color:#a9d0a5;font-size:10px;white-space:nowrap}
+.v482PathCard p{font-size:10px;color:#b4ad97;line-height:1.6;margin:5px 0 9px}
+.v482Materials{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}.v482Material{padding:5px 2px;text-align:center;background:#1b1d17;border:1px solid #484638;border-radius:5px;opacity:.66}.v482Material.got{background:#354b38;border-color:#70866b;opacity:1}.v482Material span{display:block;font-size:12px}.v482Material small{display:block;color:#d5ceba;font-size:9px;margin-top:4px;overflow-wrap:anywhere}
+.v482Progress{height:5px;border-radius:4px;background:#3c3c2d;margin-top:8px;overflow:hidden}.v482Progress i{display:block;height:100%;background:#90b18a}
+.v482PathEvolution{font-size:10px;color:#e6d0a1;margin-top:7px}.v482Vacant{border:1px dashed #716751;border-radius:8px;color:#aca691;font-size:11px;padding:13px;text-align:center;margin-bottom:8px}
+.v482ChoiceState{font-size:10px;color:#b4c6a7;margin-top:9px;line-height:1.8}
+@media(max-height:680px){#v480PauseOverlay .v480Panel{padding:9px}#v480PauseOverlay .eyebrow{display:none}#v480PauseOverlay #v480PauseTitle{font-size:17px}#v480PauseOverlay .v480SaveNote{display:none}.v482JournalBody{min-height:85px}.v482Tab{padding:7px 2px}}
+@media(max-width:360px){#v482PathsHud{width:146px}.v482HudRow{font-size:9px}.v482Tab{font-size:10px}}

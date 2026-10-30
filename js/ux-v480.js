@@ -10,6 +10,13 @@
   let nextHint = 0;
   let guideStep = 0;
   let guideStartsRun = false;
+  const hintTimes = [2, 24, 65, 155];
+  const hintTips = [
+    '🕹 왼쪽 조이스틱으로 움직이세요. 공격은 자동입니다.',
+    '📦 보급 상자는 가까이 가서 공격으로 부수세요.',
+    '✨ 경험치를 모으고 무공을 얻어 강해지세요.',
+    '⚔️ 중간 보스와 최종 보스를 물리쳐 원정을 완수하세요.'
+  ];
 
   const pauseButton = document.createElement('button');
   pauseButton.id = 'v480PauseButton';
@@ -344,18 +351,18 @@
   update = function(dt) {
     const result = previousUpdate(dt);
     if (tutorialRun && running && !paused) {
-      const times = [2, 24, 65, 155];
-      const tips = [
-        '🕹 왼쪽 조이스틱으로 움직이세요. 공격은 자동입니다.',
-        '📦 보급 상자는 가까이 가서 공격으로 부수세요.',
-        '✨ 경험치를 모으고 무공을 얻어 강해지세요.',
-        '⚔️ 중간 보스와 최종 보스를 물리쳐 원정을 완수하세요.'
-      ];
-      if (nextHint < times.length && elapsed >= times[nextHint]) {
-        showToast(tips[nextHint++]);
+      if (nextHint < hintTimes.length && elapsed >= hintTimes[nextHint]) {
+        showToast(hintTips[nextHint++]);
       }
     }
     return result;
+  };
+
+  // Paused overlays hide the battlefield; skip all expensive Canvas drawing while paused.
+  const previousDraw = draw;
+  draw = function() {
+    if (running && paused) return;
+    return previousDraw();
   };
 
   document.addEventListener('visibilitychange', () => {

@@ -29,7 +29,7 @@
   const school=id=>owned().find(p=>p.id===id);
   const ingredients=id=>{const f=recipe(id);return f?[...f.ingredients,f.key]:[]};
   const progress=p=>ingredients(p.id).filter(id=>p.materials?.[id]).length;
-  let hudSignature='';
+  let hudSignature='__init__';
 
   function ensureState(){
     if(!player)return;
@@ -240,7 +240,7 @@
 
   const baseStart=start;
   start=function(){
-    hudSignature='';
+    hudSignature='__init__';
     const result=baseStart();
     if(player){player.v482Paths=[];player.v482Offers=null;player.v482Rewards=0}
     syncHud();
@@ -406,5 +406,8 @@
   window.MurimJournal={render:renderJournal,getPaths:()=>owned().map(p=>({
     id:p.id,progress:progress(p),fused:p.fused
   }))};
+  const pauseGuide=document.querySelector('#skillScreen .subtitle');
+  if(pauseGuide)pauseGuide.textContent='각 원정에서 유파 최대 3개를 선택합니다. 재료 무공 2종과 핵심 심법 1종은 각 유파 내부에 축적되고, 조건을 완성하면 해당 유파가 자동 진화합니다. 3개 유파는 모두 독립적으로 진화할 수 있습니다. 일시정지의 유파/진화 도감 탭에서 진행 상황을 확인하세요.';
+
   window.MurimBuildVersion='4.8.2';
 })();

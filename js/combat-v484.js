@@ -78,10 +78,11 @@
   const techniqueFor=item=> {
     if(!item||item.slot!=='weapon'||!TECHNIQUES[item.weaponType])return null;
     const list=TECHNIQUES[item.weaponType];
-    if(list.some(t=>t.id===item.v484Technique))return item.v484Technique;
-    const key=String(item.id||item.name||item.weaponType);
-    let hash=0;for(let i=0;i<key.length;i++)hash=((hash*31)+key.charCodeAt(i))|0;
-    item.v484Technique=list[(hash>>>0)%list.length].id;
+    if(!list.some(t=>t.id===item.v484Technique)){
+      const key=String(item.id||item.name||item.weaponType);
+      let hash=0;for(let i=0;i<key.length;i++)hash=((hash*31)+key.charCodeAt(i))|0;
+      item.v484Technique=list[(hash>>>0)%list.length].id;
+    }
     const desc=list.find(t=>t.id===item.v484Technique);
     item.affixes=Array.isArray(item.affixes)?item.affixes:[];
     if(!item.affixes.some(a=>a.key==='v484Technique')){
@@ -264,6 +265,7 @@
     else if(b.v484Dot==='fire')dot(e,Math.max(2,player.damage*.24),2.4,'#f4a375');
     if(classId()==='shadow'&&(player.weaponType==='dagger'||player.weaponType==='bow')){
       e.v484ShadowMarks=Math.min(3,(e.v484ShadowMarks||0)+1);
+      player.v484ShadowMarks=((player.v484ShadowMarks||0)+1)%3;
       if(hasSynergy('stormNova'))e.slow=Math.max(e.slow||0,1.4);
       if(e.v484ShadowMarks>=3){
         e.v484ShadowMarks=0;

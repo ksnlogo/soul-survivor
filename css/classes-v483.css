@@ -1,0 +1,24 @@
+/* v4.8.3 class select + class loot indicators */
+#v43DiscipleBtn,#v43DiscipleScreen{display:none!important}
+#v483ClassOverlay{z-index:1050}
+.v483ClassPanel{max-height:min(95dvh,850px);width:min(96vw,650px);display:flex;flex-direction:column;padding:17px 15px;overflow:hidden}
+.v483ClassPanel h2{font-size:23px;margin:7px 0}
+.v483ClassPanel .subtitle{font-size:12px;margin:4px 0 12px;line-height:1.6}
+.v483ClassGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;padding:1px}
+.v483ClassCard{min-width:0;text-align:left;border:1px solid #676350;border-radius:12px;background:#242920;color:#efecd9;display:flex;gap:10px;padding:13px 10px;cursor:pointer;touch-action:manipulation}
+.v483ClassCard.chosen{background:#32443a;border:2px solid #c9b878;padding:12px 9px;box-shadow:inset 0 0 0 1px #536c51}
+.v483ClassIcon{font-size:28px;min-width:32px;text-align:center}
+.v483ClassContent{display:flex;flex-direction:column;gap:6px;min-width:0}
+.v483ClassContent b{font-size:16px;color:#f2deb4}
+.v483ClassContent b small{font-size:10px;color:#b3c1ad;white-space:nowrap}
+.v483ClassContent span{font-size:11px;color:#c7c6b5;line-height:1.55}
+.v483ClassContent em{font-size:11px;font-style:normal;color:#cbd8c4}
+.v483ClassContent strong{font-size:11px;color:#d8bd7c}
+.v483SelectHint{font-size:11px;line-height:1.5;color:#b7b29f;margin:10px 0 4px}
+.v483ClassActions{display:flex;gap:10px;justify-content:space-between;margin-top:8px;flex-shrink:0}
+.v483ClassActions button{flex:1}
+.v483Incompatible{padding:10px;color:#f4c9a0;background:#412b25;border:1px solid #9f6b50;border-radius:8px;font-size:12px;line-height:1.5;margin:8px 0}
+.v483JobLine{padding:10px;background:#314536;border:1px solid #6a8768;border-radius:7px;margin-bottom:9px;color:#f4e4ba;font-size:13px;font-weight:700}
+.v483JobLine small{display:block;font-size:11px;color:#e0decb;font-weight:400;line-height:1.6;margin-top:4px}
+@media(max-width:480px){.v483ClassGrid{grid-template-columns:1fr}.v483ClassPanel{max-height:calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 16px);padding:11px}.v483ClassPanel h2{font-size:20px}.v483ClassCard{padding:8px 10px;min-height:88px}.v483ClassCard.chosen{padding:7px 9px}.v483ClassIcon{font-size:25px}.v483ClassContent{gap:3px}.v483ClassContent b{font-size:14px}.v483ClassContent span{font-size:10px}.v483ClassContent em,.v483ClassContent strong{font-size:10px}}
+@media(max-height:630px){.v483ClassPanel .subtitle{display:none}.v483ClassCard{min-height:68px}.v483SelectHint{display:none}}

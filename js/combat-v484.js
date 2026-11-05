@@ -359,13 +359,9 @@
     }
     const fill=el('v484GaugeFill');if(fill)fill.style.width=Math.round(progress*100)+'%';
   }
-  const oldHud=updateSkillHUD;
-  updateSkillHUD=function(){
-    const result=oldHud();
-    // Called on loot/upgrade/menu changes; never cause new Canvas effects.
-    refreshBadge();
-    return result;
-  };
+  // updateSkillHUD runs every combat frame in the base game.
+  // Avoid touching a DOM gauge at 60 FPS; the update wrapper refreshes
+  // it at most once every 350 ms, including after new school selections.
   const oldStart=start;
   start=function(){
     badgeKey='';badgeTimer=0;

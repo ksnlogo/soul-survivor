@@ -302,6 +302,17 @@
     body.insertAdjacentHTML('afterbegin','<div class="v483JobLine">'+c.icon+' '+
       c.name+' · '+c.title+'<small>'+c.perk+'</small></div>');
   });
+  function refreshClassStats(){
+    if(el('v480PauseOverlay')?.classList.contains('hidden'))return;
+    window.MurimJournal?.render?.();
+  }
+  // v4.8.2 renders the journal on these events first; enrich its first
+  // character tab with the selected class immediately afterwards.
+  el('v480PauseButton')?.addEventListener('click',refreshClassStats);
+  el('v480Continue')?.addEventListener('click',refreshClassStats);
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden)refreshClassStats();
+  });
   window.MurimClassSystem={classes:CLASSES.map(c=>({id:c.id,name:c.name,weapons:c.weapons.slice()})),
     current:()=>chosenClass()?.id,allowedWeapon:(type)=>chosenClass()?.weapons.includes(type)};
   window.MurimBuildVersion='4.8.3';

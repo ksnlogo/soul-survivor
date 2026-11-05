@@ -19,12 +19,11 @@
   const getClass=id=>CLASSES.find(x=>x.id===id)||null;
   const classForWeapon=weapon=>CLASSES.find(x=>x.weapons.includes(weapon))||CLASSES[0];
   const itemType=item=>item?.weaponType||'sword';
-  const chosenClass=()=>getClass(player?.v483ClassId)||getClass(profile.selectedClass)||classForWeapon(itemType(equippedItem('weapon')));
+  const chosenClass=()=>getClass(player?.v483ClassId)||(player?.weaponType?classForWeapon(player.weaponType):null)||getClass(profile.selectedClass)||classForWeapon(itemType(equippedItem('weapon')));
   const weaponAllowed=(c,item)=>!!(c&&item&&item.slot==='weapon'&&c.weapons.includes(item.weaponType));
   const savedStart=el('startBtn').onclick;
   const savedRetry=el('retryBtn').onclick;
   let pendingClass=null,chosenId=null;
-  let weaponChestCount=0;
   let originalWeaponDefs=[];
   const selection=document.createElement('div');
   selection.id='v483ClassOverlay';selection.className='overlay hidden';
@@ -116,7 +115,6 @@
     v440Companion=null;
     profile.activeDisciple=null;
     if(player)applyPerk(desired);
-    weaponChestCount=0;
     saveProfile();
     return result;
   };
@@ -201,9 +199,9 @@
   breakChest=function(c){
     if(!c||c.broken)return;
     const result=baseBreak(c);
-    if(c.broken&&running&&player){
-      weaponChestCount++;
-      if(weaponChestCount===1){
+    if(c.broken&&running&&player&&!player.v483FirstClassWeaponChest){
+      player.v483FirstClassWeaponChest=true;
+      {
         const i=rollByClass(stageItemLevel(),true,true);
         lootOrbs.push({x:c.x+18,y:c.y-13,r:13,phase:0,dead:false,item:i});
         showToast(chosenClass().icon+' '+chosenClass().name+' 전용 무기 발견!');
